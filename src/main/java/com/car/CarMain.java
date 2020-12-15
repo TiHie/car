@@ -1,6 +1,8 @@
 package com.car;
 
 import com.car.entity.TbCameraGunEntity;
+import com.car.entity.bean.OneSpeed;
+import com.car.service.ScanService;
 import com.car.service.TbCameraGunService;
 import com.car.util.RuntimeDataUtil;
 import org.springframework.boot.SpringApplication;
@@ -27,5 +29,11 @@ public class CarMain {
         RuntimeDataUtil.cameraGunEntityMap =
                 new ConcurrentHashMap<>(entityList.stream().collect(Collectors.toMap(e -> e.getId(), e -> e)));
         RuntimeDataUtil.today = "2020年10月22日";
+        TbCameraGunService gunService = run.getBean(TbCameraGunService.class);
+        List<OneSpeed> speedList = gunService.getSpeed();
+        RuntimeDataUtil.speedMap =
+                new ConcurrentHashMap<>(speedList.stream().collect(Collectors.toMap(e -> e.getId(), e -> e.getSpeed())));
+        ScanService scanService = run.getBean(ScanService.class);
+        scanService.scanAndUpload(false);
     }
 }

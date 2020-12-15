@@ -2,4 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.car.mapper.TbCameraGunMapper">
 
+    <select id="getSpeed" resultType="com.car.entity.bean.OneSpeed">
+        SELECT tcg.id,tc.speed
+        FROM tb_channel tc,tb_camera_gun tcg
+        WHERE tcg.channel_id=tc.id
+    </select>
 </mapper>
