@@ -24,12 +24,14 @@ public class TbCarEntity implements Serializable {
 	@ApiModelProperty(value = "")
 	@TableId(value = "id", type =  IdType.AUTO)
 	private Integer id;
+	@ApiModelProperty(value = "摄像枪id")
+	private Integer cameraGunId;
 	@ApiModelProperty(value = "车牌号")
 	private String licensePlate;
 	@ApiModelProperty(value = "车辆速度")
 	private Integer speed;
 	@ApiModelProperty(value = "是否超速")
-	private Integer status;
+	private Boolean status;
 	@ApiModelProperty(value = "拍摄日期")
 	private Date shootingDate;
 	@ApiModelProperty(value = "具体是在这天的哪个小时")

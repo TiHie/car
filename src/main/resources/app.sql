@@ -12,6 +12,7 @@ CREATE TABLE tb_channel(
 #摄像枪表
 CREATE TABLE tb_camera_gun(
                               id INT(8) PRIMARY KEY ,
+                              channel_id INT(8) COMMENT '通道id',
                               name VARCHAR(256) COMMENT '摄像枪名称',
                               note VARCHAR(256) COMMENT '备注',
                               rule VARCHAR(256) COMMENT '摄像枪匹配规则',
@@ -23,6 +24,7 @@ CREATE TABLE tb_camera_gun(
 #车辆表
 CREATE TABLE tb_car(
                        id INT(8) PRIMARY KEY ,
+                       camera_gun_id INT(8) COMMENT '摄像枪id',
                        license_plate VARCHAR(64) COMMENT '车牌号',
                        speed INT(8) COMMENT '车辆速度',
                        status BOOLEAN COMMENT '是否超速',

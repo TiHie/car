@@ -27,7 +27,7 @@ public class SwaggerConfig {
 
     private ApiInfo webApiInfo(){
         return new ApiInfoBuilder()
-                .title("构建工程")
+                .title("车辆图片管理项目")
                 .description("本文档描述了接口定义")
                 .version("1.0")
                 .contact(new Contact("xxx", "http://xxxxxx.com", "xxxxxxx@qq.com"))

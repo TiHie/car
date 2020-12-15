@@ -24,6 +24,8 @@ public class TbCameraGunEntity implements Serializable {
 	@ApiModelProperty(value = "")
 	@TableId(value = "id", type =  IdType.AUTO)
 	private Integer id;
+	@ApiModelProperty(value = "通道id")
+	private Integer channelId;
 	@ApiModelProperty(value = "摄像枪名称")
 	private String name;
 	@ApiModelProperty(value = "备注")
