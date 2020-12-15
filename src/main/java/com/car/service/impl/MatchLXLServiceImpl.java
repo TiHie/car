@@ -7,8 +7,10 @@ import com.car.util.DateUtil;
 import com.car.util.RuntimeDataUtil;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,7 +19,7 @@ import java.util.regex.Pattern;
 public class MatchLXLServiceImpl implements MatchService {
 
     @Override
-    public TbCarEntity match(String name) {
+    public TbCarEntity match(String fileName, String regStr, List<String> regGroup2EntityField) {
 
         return null;
     }
