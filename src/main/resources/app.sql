@@ -2,7 +2,7 @@ CREATE DATABASE car;
 USE car;
 #正则码表
 CREATE TABLE tb_regex_code(
-                           id INT(8) PRIMARY KEY,
+                           id INT(8) PRIMARY KEY AUTO_INCREMENT,
                            reg_name VARCHAR(64) COMMENT '正则名:前端传来的例如抓拍时间',
                            reg_code VARCHAR(256) COMMENT '正则码例如\\d{12}',
 --                            reg_field_name VARCHAR(256) COMMENT '该正则字段对应代码实体属性名,例如抓拍时间对应实体名为shootingTime',
