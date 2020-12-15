@@ -24,6 +24,8 @@ public class ScanServiceImpl implements ScanService {
 
     @Autowired
     private TbCarService tbCarService;
+    @Autowired
+    private MatchLXLServiceImpl matchLXLService;
 
     /**
      * 扫描所有的未操作过的文件
