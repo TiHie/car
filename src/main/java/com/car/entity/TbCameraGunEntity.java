@@ -36,6 +36,8 @@ public class TbCameraGunEntity implements Serializable {
 	private String splitStr;
 	@ApiModelProperty(value = "摄像枪目录")
 	private String fileDir;
+	@ApiModelProperty(value = "是否自动扫描该通道")
+	private boolean autoScan;
 	@ApiModelProperty(value = "")
 	private Date createTime;
 	@ApiModelProperty(value = "")
