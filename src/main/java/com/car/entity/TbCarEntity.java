@@ -22,7 +22,7 @@ public class TbCarEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	@ApiModelProperty(value = "")
-	@TableId(value = "id", type =  IdType.UUID)
+	@TableId(value = "id", type =  IdType.AUTO)
 	private Integer id;
 	@ApiModelProperty(value = "车牌号")
 	private String licensePlate;

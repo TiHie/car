@@ -22,7 +22,7 @@ public class TbLogEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	@ApiModelProperty(value = "")
-	@TableId(value = "id", type =  IdType.UUID)
+	@TableId(value = "id", type =  IdType.AUTO)
 	private Integer id;
 	@ApiModelProperty(value = "操作备注，如xxx导入了图片，xxx登录")
 	private String note;

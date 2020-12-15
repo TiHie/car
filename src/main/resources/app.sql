@@ -14,6 +14,9 @@ CREATE TABLE tb_camera_gun(
                               id INT(8) PRIMARY KEY ,
                               name VARCHAR(256) COMMENT '摄像枪名称',
                               note VARCHAR(256) COMMENT '备注',
+                              rule VARCHAR(256) COMMENT '摄像枪匹配规则',
+                              split_str VARCHAR(32) COMMENT '分隔字符串',
+                              file_dir VARCHAR(128) COMMENT '摄像枪目录',
                               create_time DATETIME,
                               update_time DATETIME
 )CHARSET=utf8 ENGINE=InnoDb;

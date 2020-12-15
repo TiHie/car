@@ -22,12 +22,18 @@ public class TbCameraGunEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	@ApiModelProperty(value = "")
-	@TableId(value = "id", type =  IdType.UUID)
+	@TableId(value = "id", type =  IdType.AUTO)
 	private Integer id;
 	@ApiModelProperty(value = "摄像枪名称")
 	private String name;
 	@ApiModelProperty(value = "备注")
 	private String note;
+	@ApiModelProperty(value = "摄像枪匹配规则")
+	private String rule;
+	@ApiModelProperty(value = "分隔字符串")
+	private String splitStr;
+	@ApiModelProperty(value = "摄像枪目录")
+	private String fileDir;
 	@ApiModelProperty(value = "")
 	private Date createTime;
 	@ApiModelProperty(value = "")

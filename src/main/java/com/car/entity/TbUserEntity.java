@@ -22,7 +22,7 @@ public class TbUserEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	@ApiModelProperty(value = "")
-	@TableId(value = "id", type =  IdType.UUID)
+	@TableId(value = "id", type =  IdType.AUTO)
 	private Integer id;
 	@ApiModelProperty(value = "")
 	private String username;
