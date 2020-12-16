@@ -7,7 +7,6 @@ import com.car.util.DateUtil;
 import com.car.util.RuntimeDataUtil;
 import org.springframework.stereotype.Service;
 
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +69,7 @@ public class MatchLXLServiceImpl implements MatchService {
         TbCarEntity tbCarEntity = new TbCarEntity();
         tbCarEntity.setSpeed(Integer.valueOf(dataMap.get("carSpeed")));
         tbCarEntity.setLicensePlate(dataMap.get("carPlate"));
+        tbCarEntity.setLicensePlateColor(dataMap.get("carColor"));
         if (null != dataMap.get("shootingTime")) {
             Date date = DateUtil.strParseData("yyyyMMddHHmmss", dataMap.get("shootingTime"));
             tbCarEntity.setHourTime(date.getHours());

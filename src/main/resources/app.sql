@@ -37,7 +37,7 @@ CREATE TABLE tb_car(
                        id INT(8) PRIMARY KEY AUTO_INCREMENT,
                        camera_gun_id INT(8) COMMENT '摄像枪id',
                        license_plate VARCHAR(64) COMMENT '车牌号',
-                       license_palte_color VARCHAR(4) COMMENT '车牌颜色',
+                       license_plate_color VARCHAR(64) COMMENT '车牌颜色',
                        speed INT(8) COMMENT '车辆速度',
                        status BOOLEAN COMMENT '是否超速',
                        shooting_date DATETIME COMMENT '拍摄日期',
