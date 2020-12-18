@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.car.mapper.HomePageDataMapper">
+
+    <select id="selectCarMassageById" resultType="com.car.entity.dto.CarMassageDto">
+        SELECT car.id AS car_id, camera.id AS camera_gun_id, channel.id AS channel_id, car.create_time,channel.`name` AS channel_name,camera.`name` AS camera_name,channel.speed AS channel_speed, car.license_plate,car.license_plate_color,car.speed AS car_speed, car.`status`, car.car_image FROM tb_car AS car JOIN tb_camera_gun AS camera ON car.camera_gun_id = camera.id JOIN tb_channel AS channel ON  camera.channel_id = channel.id WHERE car.id = #{carId}
+    </select>
+
+    <select id="selectAllCarById" resultType="java.lang.Integer">
+        SELECT COUNT(tb_car.id) AS all_car_count FROM tb_car JOIN tb_camera_gun ON tb_car.camera_gun_id = tb_camera_gun.id JOIN tb_channel ON tb_camera_gun.channel_id = tb_channel.id WHERE tb_channel.id = #{channelId}
+    </select>
+
+    <select id="selectNormalCarById" resultType="java.lang.Integer">
+        SELECT COUNT(tb_car.id) AS normal_car_count FROM tb_car JOIN tb_camera_gun ON tb_car.camera_gun_id = tb_camera_gun.id JOIN tb_channel ON tb_camera_gun.channel_id = tb_channel.id WHERE `status` = 0 AND tb_channel.id = #{channelId}
+    </select>
+
+
+</mapper>
