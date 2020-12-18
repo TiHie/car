@@ -1,7 +1,6 @@
 package com.car.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -13,7 +12,6 @@ import java.util.Date;
 
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import com.baomidou.mybatisplus.annotation.TableName;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
@@ -51,9 +49,12 @@ public class TbCarEntity implements Serializable {
 	private transient String channelNameAndSpeed;
 	@ApiModelProperty(value = "通道名称(暂存)")
 	private transient String channelName;
+
 	@ApiModelProperty(value = "")
+	@TableField(fill = FieldFill.INSERT)
 	private Date createTime;
 	@ApiModelProperty(value = "")
+	@TableField(fill = FieldFill.INSERT_UPDATE)
 	private Date updateTime;
 
 }

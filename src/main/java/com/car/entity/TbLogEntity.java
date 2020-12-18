@@ -1,7 +1,6 @@
 package com.car.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
@@ -10,7 +9,6 @@ import java.util.Date;
 
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import com.baomidou.mybatisplus.annotation.TableName;
 
 @Data
 @ToString
@@ -28,9 +26,12 @@ public class TbLogEntity implements Serializable {
 	private String note;
 	@ApiModelProperty(value = "登录 ip")
 	private String ip;
+
 	@ApiModelProperty(value = "")
+	@TableField(fill = FieldFill.INSERT)
 	private Date createTime;
 	@ApiModelProperty(value = "")
+	@TableField(fill = FieldFill.INSERT_UPDATE)
 	private Date updateTime;
 
 }

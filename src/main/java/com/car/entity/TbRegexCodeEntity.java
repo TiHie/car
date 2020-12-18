@@ -1,8 +1,6 @@
 package com.car.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,8 +30,11 @@ public class TbRegexCodeEntity {
     private String regexCode;
 //    @ApiModelProperty(value = "正则表达式字段对应的代码实体名")
 //    private String regFieldName;
+
     @ApiModelProperty(value = "")
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
     @ApiModelProperty(value = "")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 }

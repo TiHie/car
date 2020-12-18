@@ -1,7 +1,6 @@
 package com.car.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
@@ -10,7 +9,6 @@ import java.util.Date;
 
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import com.baomidou.mybatisplus.annotation.TableName;
 
 @Data
 @ToString
@@ -38,9 +36,12 @@ public class TbCameraGunEntity implements Serializable {
 	private String fileDir;
 	@ApiModelProperty(value = "是否自动扫描该通道")
 	private boolean autoScan;
+
 	@ApiModelProperty(value = "")
+	@TableField(fill = FieldFill.INSERT)
 	private Date createTime;
 	@ApiModelProperty(value = "")
+	@TableField(fill = FieldFill.INSERT_UPDATE)
 	private Date updateTime;
 
 }
