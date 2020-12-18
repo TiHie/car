@@ -10,4 +10,5 @@ public interface ScanService {
     public void scanAndUpload(boolean scanAll);
     public List<OneImg> uploadAll(int gunId, boolean scanAll, TbCameraGunEntity tbCameraGunEntity);
     public TbCarEntity uploadOne(int gunId,String fileName);
+    public List<String> uploadAll(int gunId,List<String> fileNames);
 }

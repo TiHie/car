@@ -32,6 +32,11 @@ public class TbUserEntity implements Serializable {
 	private String role;
 	@ApiModelProperty(value = "")
 	private String createBy;
+	@TableLogic
+	@ApiModelProperty(value = "")
+	private boolean isDeleted;
+	@ApiModelProperty(value = "")
+	private String remark;
 
 	@ApiModelProperty(value = "")
 	@TableField(fill = FieldFill.INSERT)

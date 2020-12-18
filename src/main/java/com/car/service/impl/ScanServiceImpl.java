@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +97,7 @@ public class ScanServiceImpl implements ScanService {
         return error;
     }
 
-    //从上传的文件夹拷贝到源文件夹
+    //上传图片
     @Override
     public TbCarEntity uploadOne(int gunId, String fileName) {
         TbCarEntity match = matchLXLService.match(fileName, gunId);
@@ -106,6 +107,29 @@ public class ScanServiceImpl implements ScanService {
         match.setStatus(match.getSpeed() > RuntimeDataUtil.speedMap.get(gunId));
         tbCarService.save(match);
         return match;
+    }
+
+    @Override
+    public List<String> uploadAll(int gunId, List<String> fileNames) {
+        List<String> error = new ArrayList<>();
+        List<TbCarEntity> result = new ArrayList<>();
+        for (String file : fileNames) {
+            try{
+                String[] split = file.split("/");
+                String fileName = split[split.length-1];//拿到最后一个元素作为文件名
+                TbCarEntity match = matchLXLService.match(fileName, gunId);
+                match.setCarImage(ip+stitch+"/"+fileName);
+                match.setCameraGunId(gunId);
+                //true超速，false没有
+                match.setStatus(match.getSpeed() > RuntimeDataUtil.speedMap.get(gunId));
+                result.add(match);
+            }catch (Exception e){
+                e.printStackTrace();
+                error.add(file);
+            }
+        }
+        tbCarService.saveBatch(result);
+        return error;
     }
 
 }

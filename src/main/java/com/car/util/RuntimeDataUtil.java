@@ -2,6 +2,7 @@ package com.car.util;
 
 import com.car.entity.TbCameraGunEntity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,4 +23,9 @@ public class RuntimeDataUtil {
     public static Map<String, Date> dateMap = new ConcurrentHashMap<>();
     //缓存摄像枪与速度 k:摄像枪id  v:限制速度
     public static Map<Integer, Integer> speedMap = null;
+
+    //日期格式化对象
+    public static SimpleDateFormat formatDay = new SimpleDateFormat("d");
+    public static SimpleDateFormat formatMonth = new SimpleDateFormat("M");
+    public static SimpleDateFormat formatYear = new SimpleDateFormat("yyyy");
 }

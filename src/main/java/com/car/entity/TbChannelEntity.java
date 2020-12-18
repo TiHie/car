@@ -28,6 +28,11 @@ public class TbChannelEntity implements Serializable {
 	private Integer speed;
 	@ApiModelProperty(value = "备注")
 	private String note;
+	@TableLogic
+	@ApiModelProperty(value = "")
+	private boolean isDeleted;
+	@ApiModelProperty(value = "")
+	private String remark;
 
 	@ApiModelProperty(value = "")
 	@TableField(fill = FieldFill.INSERT)

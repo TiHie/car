@@ -30,6 +30,11 @@ public class TbRegexCodeEntity {
     private String regexCode;
 //    @ApiModelProperty(value = "正则表达式字段对应的代码实体名")
 //    private String regFieldName;
+    @TableLogic
+    @ApiModelProperty(value = "")
+    private boolean isDeleted;
+    @ApiModelProperty(value = "")
+    private String remark;
 
     @ApiModelProperty(value = "")
     @TableField(fill = FieldFill.INSERT)

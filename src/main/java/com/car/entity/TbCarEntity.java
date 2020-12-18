@@ -49,6 +49,11 @@ public class TbCarEntity implements Serializable {
 	private transient String channelNameAndSpeed;
 	@ApiModelProperty(value = "通道名称(暂存)")
 	private transient String channelName;
+	@TableLogic
+	@ApiModelProperty(value = "")
+	private boolean isDeleted;
+	@ApiModelProperty(value = "")
+	private String remark;
 
 	@ApiModelProperty(value = "")
 	@TableField(fill = FieldFill.INSERT)
