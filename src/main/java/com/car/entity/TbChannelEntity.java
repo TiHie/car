@@ -29,8 +29,6 @@ public class TbChannelEntity implements Serializable {
 	@ApiModelProperty(value = "备注")
 	private String note;
 
-
-
 	@ApiModelProperty(value = "")
 	@TableField(fill = FieldFill.INSERT)
 	private Date createTime;

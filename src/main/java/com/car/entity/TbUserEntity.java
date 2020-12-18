@@ -33,8 +33,6 @@ public class TbUserEntity implements Serializable {
 	@ApiModelProperty(value = "")
 	private String createBy;
 
-
-
 	@ApiModelProperty(value = "")
 	@TableField(fill = FieldFill.INSERT)
 	private Date createTime;

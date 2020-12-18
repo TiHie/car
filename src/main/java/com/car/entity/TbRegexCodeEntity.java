@@ -31,8 +31,6 @@ public class TbRegexCodeEntity {
 //    @ApiModelProperty(value = "正则表达式字段对应的代码实体名")
 //    private String regFieldName;
 
-
-
     @ApiModelProperty(value = "")
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;

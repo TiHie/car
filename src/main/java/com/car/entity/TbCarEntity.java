@@ -50,8 +50,6 @@ public class TbCarEntity implements Serializable {
 	@ApiModelProperty(value = "通道名称(暂存)")
 	private transient String channelName;
 
-
-
 	@ApiModelProperty(value = "")
 	@TableField(fill = FieldFill.INSERT)
 	private Date createTime;

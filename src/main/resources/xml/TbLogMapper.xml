@@ -2,4 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.car.mapper.TbLogMapper">
 
+    <select id="likeSearchLog" resultType="com.car.entity.TbLogEntity" parameterType="com.car.entity.dto.LogDTO">
+        select * from tb_log
+        <where>
+            <if test="LogDTO.id != null and LogDTO.id != '' ">
+                id = #{LogDTO.id}
+            </if>
+            <if test="LogDTO.note != null and LogDTO.note != '' ">
+                and note like concat('%',#{LogDTO.note},'%')
+            </if>
+            <if test="LogDTO.ip != null and LogDTO.ip != '' ">
+                and ip like concat('%',#{LogDTO.ip},'%')
+            </if>
+            <if test="LogDTO.isDeleted != null and LogDTO.isDeleted != '' ">
+                and is_deleted = #{LogDTO.isDeleted}
+            </if>
+            <if test="LogDTO.remark != null and LogDTO.remark != '' ">
+                and remark like concat('%',#{LogDTO.remark},'%')
+            </if>
+            <if test="LogDTO.startTime !=null">
+                <![CDATA[ and oper_time  >=  #{LogDTO.startTime}  ]]>
+            </if>
+            <if test="LogDTO.endTime !=null">
+                <![CDATA[ and oper_time <=  #{LogDTO.endTime}  ]]>
+            </if>
+        </where>
+    </select>
 </mapper>

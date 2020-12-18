@@ -20,7 +20,6 @@ public class CarMain {
         ConfigurableApplicationContext run = SpringApplication.run(CarMain.class, args);
         init(run);
     }
-
     //初始化运行时数据
     public static void init(ConfigurableApplicationContext run){
         TbCameraGunService tbCameraGunService = run.getBean(TbCameraGunService.class);

@@ -37,8 +37,6 @@ public class TbCameraGunEntity implements Serializable {
 	@ApiModelProperty(value = "是否自动扫描该通道")
 	private boolean autoScan;
 
-
-
 	@ApiModelProperty(value = "")
 	@TableField(fill = FieldFill.INSERT)
 	private Date createTime;

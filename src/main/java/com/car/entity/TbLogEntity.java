@@ -27,8 +27,6 @@ public class TbLogEntity implements Serializable {
 	@ApiModelProperty(value = "登录 ip")
 	private String ip;
 
-
-
 	@ApiModelProperty(value = "")
 	@TableField(fill = FieldFill.INSERT)
 	private Date createTime;
