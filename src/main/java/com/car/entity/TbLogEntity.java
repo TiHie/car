@@ -26,6 +26,11 @@ public class TbLogEntity implements Serializable {
 	private String note;
 	@ApiModelProperty(value = "登录 ip")
 	private String ip;
+	@TableLogic
+	@ApiModelProperty(value = "")
+	private boolean isDeleted;
+	@ApiModelProperty(value = "")
+	private String remark;
 
 	@ApiModelProperty(value = "")
 	@TableField(fill = FieldFill.INSERT)

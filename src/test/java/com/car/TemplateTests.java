@@ -8,22 +8,16 @@ import com.car.entity.TbCarEntity;
 import com.car.entity.TbChannelEntity;
 import com.car.entity.vo.ChannelVo;
 import com.car.mapper.HomePageDataMapper;
-import com.car.mapper.TbCarMapper;
-import com.car.mapper.TbUserMapper;
-import com.car.service.ScanService;
 import com.car.service.TbCameraGunService;
 import com.car.service.TbCarService;
 import com.car.service.TbChannelService;
-import io.swagger.models.auth.In;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import static java.util.stream.Collectors.toList;
+
 
 @SpringBootTest
 class TemplateTests {

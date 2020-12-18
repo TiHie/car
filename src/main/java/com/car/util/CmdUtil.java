@@ -1,16 +1,9 @@
 package com.car.util;
 
-import ch.qos.logback.core.util.FileUtil;
-import com.alibaba.fastjson.JSON;
-import com.car.entity.bean.OneImg;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
-import org.springframework.util.FileSystemUtils;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CmdUtil {

@@ -36,6 +36,13 @@ public class TbCameraGunEntity implements Serializable {
 	private String fileDir;
 	@ApiModelProperty(value = "是否自动扫描该通道")
 	private boolean autoScan;
+	@ApiModelProperty(value = "摄像枪地址")
+	private String location;
+	@TableLogic
+	@ApiModelProperty(value = "")
+	private boolean isDeleted;
+	@ApiModelProperty(value = "")
+	private String remark;
 
 	@ApiModelProperty(value = "")
 	@TableField(fill = FieldFill.INSERT)
