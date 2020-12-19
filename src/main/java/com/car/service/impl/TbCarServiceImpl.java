@@ -91,7 +91,7 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
             String startTimeStr = formatter.format(speedDTO.getStartTime());
             long isTime = getDaySub(startTimeStr, formatter.format(new Date()));
             System.out.println("====isTime" + isTime);
-            if (isTime < 1) {
+            if (isTime ==0) {
                 hourInt = Integer.parseInt(df.format(hour));
                 for (int i = 0; i < hourInt; i++) {
                     Map<String, Integer> hourMap = tbCarMapper.hourRatio(speedDTO, i + 1);
