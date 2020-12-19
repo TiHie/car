@@ -50,22 +50,25 @@ public class CarMain {
             //假定不是 windows 就是 linux
             RuntimeDataUtil.environment = "linux";
             RuntimeDataUtil.connectStr = "/";
+            System.out.println("linux");
         }
 
-        ScanService scanService = run.getBean(ScanService.class);
-        scanService.scanAndUpload(false);
-        //启动定时任务
         ScheduledExecutorService scheduledExecutorService = run.getBean(ScheduledExecutorService.class);
-        //定时扫描文件夹，每分钟更新一次
-        scheduledExecutorService.scheduleWithFixedDelay(()->{
-            scanService.scanAndUpload(false);
-        },0,1, TimeUnit.MINUTES);
-
         //定时周期任务，每天 0 点执行，更新扫描的文件夹
+        //启动定时任务
         long oneDay = 24*60*60*1000;
         long remainTime = DateUtil.getRemainTime();
         scheduledExecutorService.scheduleWithFixedDelay(()->{
             RuntimeDataUtil.today = DateUtil.getTodayMatchStr();
         },remainTime+1,oneDay,TimeUnit.MILLISECONDS);
+
+        ScanService scanService = run.getBean(ScanService.class);
+
+        //定时扫描文件夹，每分钟更新一次
+        scheduledExecutorService.scheduleWithFixedDelay(()->{
+            scanService.scanAndUpload(false);
+        },0,1, TimeUnit.MINUTES);
+
+
     }
 }

@@ -67,7 +67,9 @@ public class MatchLXLServiceImpl implements MatchService {
         //channelName  : 通道名称
         //carSpeed     : 车速
         TbCarEntity tbCarEntity = new TbCarEntity();
-        tbCarEntity.setSpeed(Integer.valueOf(dataMap.get("carSpeed")));
+        if (null != dataMap.get("carSpeed")) {
+            tbCarEntity.setSpeed(Integer.valueOf(dataMap.get("carSpeed")));
+        }
         tbCarEntity.setLicensePlate(dataMap.get("carPlate"));
         tbCarEntity.setLicensePlateColor(dataMap.get("carColor"));
         if (null != dataMap.get("shootingTime")) {
