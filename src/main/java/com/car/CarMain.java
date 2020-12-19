@@ -40,10 +40,20 @@ public class CarMain {
         List<OneSpeed> speedList = gunService.getSpeed();
         RuntimeDataUtil.speedMap =
                 new ConcurrentHashMap<>(speedList.stream().collect(Collectors.toMap(e -> e.getId(), e -> e.getSpeed())));
+
+        //获取系统环境与系统连接符
+        String osName = System.getProperty("os.name");
+        if (osName.contains("Windows")){
+            RuntimeDataUtil.environment = "windows";
+            RuntimeDataUtil.connectStr = "\\";
+        }else {
+            //假定不是 windows 就是 linux
+            RuntimeDataUtil.environment = "linux";
+            RuntimeDataUtil.connectStr = "/";
+        }
+
         ScanService scanService = run.getBean(ScanService.class);
         scanService.scanAndUpload(false);
-
-
         //启动定时任务
         ScheduledExecutorService scheduledExecutorService = run.getBean(ScheduledExecutorService.class);
         //定时扫描文件夹，每分钟更新一次
