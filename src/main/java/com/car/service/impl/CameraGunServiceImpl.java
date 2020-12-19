@@ -1,8 +1,6 @@
 package com.car.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.car.entity.TbCameraGunEntity;
 import com.car.entity.TbChannelEntity;
 import com.car.entity.vo.CameraGunVo;
