@@ -34,7 +34,6 @@ public class CarController {
     @PostMapping("/api/util/uploadFile")
     public RStatic uploadFile(MultipartFile multipartFile,@RequestParam("gunId") Integer gunId){
         try{
-            System.out.println(gunId);
             multipartFile.transferTo(new File(uploadFolder+multipartFile.getOriginalFilename()));
             scanService.uploadOne(gunId,multipartFile.getOriginalFilename());
             return RStatic.ok("上传成功").
