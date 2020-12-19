@@ -62,7 +62,7 @@ public class ChannelServiceImpl implements ChannelService {
                     return RStatic.error("删除失败");
                 }
             }else {
-                return RStatic.error("内容为空");
+                return RStatic.error("通道id为空");
             }
         }catch (Exception e){
             return RStatic.error("操作有误");
@@ -80,7 +80,7 @@ public class ChannelServiceImpl implements ChannelService {
         QueryWrapper<TbChannelEntity> channelCheckQw = new QueryWrapper<>();
         channelCheckQw.eq("name",channelName);
         TbChannelEntity channelCheck = tbChannelService.getOne(channelCheckQw);
-        if (channelCheck == null){
+        if (channelCheck == null || channelCheck.getName().equals(channelName)){
             boolean saveOrUpdate = tbChannelService.saveOrUpdate(channelEntity);
             if (saveOrUpdate){
                 return RStatic.ok("修改成功");

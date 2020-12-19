@@ -15,7 +15,6 @@ import com.car.service.TbChannelService;
 import com.car.util.RStatic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,5 +82,4 @@ public class HomePageServiceImpl implements HomePageService {
         pageVo.setRecords(channelVoList);
         return RStatic.ok("查询成功").data("pageVo",pageVo);
     }
-
 }

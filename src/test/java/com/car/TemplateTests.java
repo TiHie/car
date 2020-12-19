@@ -6,12 +6,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.car.entity.TbCameraGunEntity;
 import com.car.entity.TbCarEntity;
 import com.car.entity.TbChannelEntity;
+import com.car.entity.vo.CameraGunVo;
 import com.car.entity.vo.ChannelVo;
 import com.car.mapper.HomePageDataMapper;
+import com.car.mapper.TbCameraGunMapper;
 import com.car.service.TbCameraGunService;
 import com.car.service.TbCarService;
 import com.car.service.TbChannelService;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
@@ -30,6 +33,10 @@ class TemplateTests {
     TbChannelService tbChannelService;
     @Autowired
     TbCameraGunService tbCameraGunService;
+
+    @Autowired
+    TbCameraGunMapper tbCameraGunMapper;
+
     @Test
     void contextLoads() {
         IPage<TbChannelEntity> page = tbChannelService.page(new Page<>(1, 8));
@@ -58,5 +65,23 @@ class TemplateTests {
         }
         Page<ChannelVo> pageVo = new Page<>(1,3);
         pageVo.setRecords(channelVoList);
+    }
+
+
+    @Test
+    void test2(){
+        //第几页
+        Integer page = 0;
+        //每页多少
+        Integer items = 3;
+        //总数
+        Integer gunCount = tbCameraGunMapper.getCameraGunCount();
+        //可分多少页 总数/每页多少
+        int pages = gunCount / items;
+        String str = "二";
+        String parameter = "%"+str+"%";
+
+        List<CameraGunVo> cameraGunVoList = tbCameraGunMapper.getCameraGunVo(parameter,page,items);
+        System.out.println("=="+cameraGunVoList.toString());
     }
 }

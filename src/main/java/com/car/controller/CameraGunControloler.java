@@ -1,6 +1,6 @@
 package com.car.controller;
 
-import com.car.entity.TbCameraGunEntity;
+import com.car.entity.vo.CameraGunVo;
 import com.car.service.CameraGunService;
 import com.car.util.RStatic;
 import io.swagger.annotations.Api;
@@ -23,13 +23,13 @@ public class CameraGunControloler {
 
     /***
      * 摄像枪接口-添加
-     * @param cameraGunEntity
+     * @param cameraGunVo
      * @return
      */
     @ApiOperation("摄像枪接口-添加")
     @PostMapping("/api/v1/CameraGun")
-    public RStatic addCameraGun(@RequestBody TbCameraGunEntity cameraGunEntity){
-        return cameraGunService.addCameraGun(cameraGunEntity);
+    public RStatic addCameraGun(@RequestBody CameraGunVo cameraGunVo){
+        return cameraGunService.addCameraGun(cameraGunVo);
     }
 
     /***
@@ -45,25 +45,25 @@ public class CameraGunControloler {
 
     /***
      * 摄像枪接口-修改
-     * @param cameraGunEntity
+     * @param cameraGunVo
      * @return
      */
     @ApiOperation("摄像枪接口-修改")
     @PutMapping("/api/v1/CameraGun")
-    public RStatic updateCameraGun(@RequestBody TbCameraGunEntity cameraGunEntity){
-        return cameraGunService.updateCameraGun(cameraGunEntity);
+    public RStatic updateCameraGun(@RequestBody CameraGunVo cameraGunVo){
+        return cameraGunService.updateCameraGun(cameraGunVo);
     }
 
     /***
      * 摄像枪接口-查询
-     * @param limit
+     * @param parameter
      * @param page
      * @param items
      * @return
      */
     @ApiOperation("摄像枪接口-查询")
     @GetMapping("/api/v1/CameraGun")
-    public RStatic selectCameraGun(String limit,int page,int items){
-        return cameraGunService.selectCameraGun(limit,page,items);
+    public RStatic selectCameraGun(String parameter,int page,int items){
+        return cameraGunService.selectCameraGun(parameter, page, items);
     }
 }
