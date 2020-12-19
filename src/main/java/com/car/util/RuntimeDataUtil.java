@@ -28,4 +28,12 @@ public class RuntimeDataUtil {
     public static SimpleDateFormat formatDay = new SimpleDateFormat("d");
     public static SimpleDateFormat formatMonth = new SimpleDateFormat("M");
     public static SimpleDateFormat formatYear = new SimpleDateFormat("yyyy");
+
+    //系统运行环境
+    public static String environment = null;
+    //系统连接符
+    public static String connectStr = null;
+
+    //缓存的一些正则表达式，用于匹配文件与目录
+    public static Map<String,Pattern> matchPattern = new ConcurrentHashMap<>();
 }
