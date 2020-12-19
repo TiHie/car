@@ -2,4 +2,149 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.car.mapper.TbCarMapper">
 
+    <resultMap id="SpeedVo" type="com.car.entity.vo.SpeedVO">
+        <result column="carId" property="carId" />
+        <result column="channelId" property="channelId" />
+        <result column="channelName" property="channelName" />
+        <result column="carSpeed" property="carSpeed" />
+        <result column="channelSpeed" property="channelSpeed" />
+        <result column="cameraGunName" property="cameraGunName" />
+        <result column="cameraGunLocation" property="cameraGunLocation" />
+    </resultMap>
+
+    <select id="getMoreDayCars" resultType="com.car.entity.vo.SpeedVO"
+            parameterType="com.car.entity.dto.SpeedDTO" >
+        select
+        tb_car.id carId,camera_gun_id,tb_channel.id channelId,tb_channel.name channelName,
+        shooting_date,shooting_time,license_plate,license_plate_color,status,
+        tb_car.speed  carSpeed,tb_channel.speed channelSpeed,
+        tb_camera_gun.name cameraGunName,tb_camera_gun.location cameraGunLocation
+
+        from tb_car,tb_camera_gun,tb_channel where tb_car.camera_gun_id = tb_camera_gun.id
+        and tb_channel.id = tb_camera_gun.channel_id
+
+        <if test="speedDTO.startTime != null  and speedDTO.endTime != null ">
+            and shooting_date BETWEEN #{speedDTO.startTime} AND #{speedDTO.endTime}
+        </if>
+        <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
+            and camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
+        </if>
+
+        <if test="speedDTO.status != null and speedDTO.status != '' ">
+            and status = #{speedDTO.status}
+        </if>
+        <if test="speedDTO.licensePlate != null and speedDTO.licensePlate != '' ">
+            and license_plate like concat('%',#{speedDTO.licensePlate},'%')
+        </if>
+        <if test="speedDTO.speed != null and speedDTO.speed != '' ">
+            and tb_car.speed >= #{speedDTO.speed}
+        </if>
+        order by hour_time desc
+    </select>
+
+    <select id="getOneDayCars" resultType="com.car.entity.vo.SpeedVO" parameterType="com.car.entity.dto.SpeedDTO">
+        select
+        tb_car.id carId,camera_gun_id,tb_channel.id channelId,tb_channel.name channelName,
+        shooting_date,shooting_time,license_plate,license_plate_color,status,
+        tb_car.speed  carSpeed,tb_channel.speed channelSpeed,
+        tb_camera_gun.name  cameraGunName,tb_camera_gun.location cameraGunLocation
+        from tb_car,tb_camera_gun,tb_channel where tb_car.camera_gun_id = tb_camera_gun.id
+        and tb_channel.id = tb_camera_gun.channel_id
+
+        <if test="speedDTO.startTime != null   ">
+            and shooting_date = #{speedDTO.startTime}
+        </if>
+        <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
+            and camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
+        </if>
+
+        <if test="speedDTO.status != null and speedDTO.status != '' ">
+            and status = #{speedDTO.status}
+        </if>
+        <if test="speedDTO.licensePlate != null and speedDTO.licensePlate != '' ">
+            and license_plate like concat('%',#{speedDTO.licensePlate},'%')
+        </if>
+        <if test="speedDTO.speed != null and speedDTO.speed != '' ">
+            and tb_car.speed >= #{speedDTO.speed}
+        </if>
+        order by hour_time desc
+    </select>
+
+    <select id="moreDayRatio" resultType="java.util.Map" parameterType="com.car.entity.dto.SpeedDTO">
+        select (select count(*) from tb_car where status = 1
+        <if test="speedDTO.startTime != null  and speedDTO.endTime != null ">
+            and shooting_date BETWEEN #{speedDTO.startTime} AND #{speedDTO.endTime}
+        </if>
+        <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
+            and camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
+        </if>
+        )
+        as overSpeed
+        ,COUNT(*) as total
+        from tb_car
+        <where>
+            <if test="speedDTO.startTime != null and speedDTO.endTime != null">
+                shooting_date BETWEEN #{speedDTO.startTime} AND #{speedDTO.endTime}
+            </if>
+            <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
+                and camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
+            </if>
+        </where>
+
+
+    </select>
+
+    <select id="oneDayRatio" resultType="java.util.Map" parameterType="com.car.entity.dto.SpeedDTO">
+        select (select count(*) from tb_car where status = 1
+        <if test="speedDTO.startTime != null  ">
+            and shooting_date = #{speedDTO.startTime}
+        </if>
+        <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
+            and camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
+        </if>
+        ) as overSpeed
+        ,COUNT(*) as total
+
+        from tb_car
+        <where>
+            <if test="speedDTO.startTime != null ">
+                shooting_date = #{speedDTO.startTime}
+            </if>
+            <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
+                and camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
+            </if>
+        </where>
+    </select>
+
+    <select id="hourRatio" resultType="java.util.Map" parameterType="com.car.entity.dto.SpeedDTO">
+        select (select count(*) from tb_car where status = 1
+
+        <if test="speedDTO.startTime != null  ">
+            and shooting_date = #{speedDTO.startTime}
+        </if>
+        <if test="hour != null  and hour != '' ">
+            and hour_time = #{hour}
+        </if>
+        <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
+            and camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
+        </if>
+        ) as overSpeed
+        ,COUNT(*) as total
+
+        from tb_car
+        <where>
+            <if test="speedDTO.startTime != null  ">
+                shooting_date = #{speedDTO.startTime} and
+            </if>
+            <if test=" hour != null  and hour != '' ">
+                hour_time = #{hour} and
+            </if>
+            <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
+                camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
+            </if>
+        </where>
+    </select>
+
+
+
 </mapper>
