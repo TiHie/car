@@ -47,14 +47,14 @@ public class CarMain {
         //启动定时任务
         ScheduledExecutorService scheduledExecutorService = run.getBean(ScheduledExecutorService.class);
         //定时扫描文件夹，每分钟更新一次
-        scheduledExecutorService.schedule(()->{
+        scheduledExecutorService.scheduleWithFixedDelay(()->{
             scanService.scanAndUpload(false);
-        },1, TimeUnit.MINUTES);
+        },0,1, TimeUnit.MINUTES);
 
         //定时周期任务，每天 0 点执行，更新扫描的文件夹
         long oneDay = 24*60*60*1000;
         long remainTime = DateUtil.getRemainTime();
-        scheduledExecutorService.scheduleAtFixedRate(()->{
+        scheduledExecutorService.scheduleWithFixedDelay(()->{
             RuntimeDataUtil.today = DateUtil.getTodayMatchStr();
         },remainTime+1,oneDay,TimeUnit.MILLISECONDS);
     }

@@ -28,4 +28,5 @@ public class RuntimeDataUtil {
     public static SimpleDateFormat formatDay = new SimpleDateFormat("d");
     public static SimpleDateFormat formatMonth = new SimpleDateFormat("M");
     public static SimpleDateFormat formatYear = new SimpleDateFormat("yyyy");
+
 }
