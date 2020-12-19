@@ -1,15 +1,20 @@
 package com.car.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.car.entity.TbCameraGunEntity;
+import com.car.entity.TbChannelEntity;
+import com.car.entity.vo.CameraGunVo;
+import com.car.mapper.TbCameraGunMapper;
 import com.car.service.CameraGunService;
 import com.car.service.TbCameraGunService;
+import com.car.service.TbChannelService;
 import com.car.util.RStatic;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,26 +27,38 @@ public class CameraGunServiceImpl implements CameraGunService{
     @Autowired
     TbCameraGunService tbCameraGunService;
 
+    @Autowired
+    TbChannelService tbChannelService;
+
+    @Autowired
+    TbCameraGunMapper tbCameraGunMapper;
     /**
      * 摄像枪接口-添加-具体实现
-     * @param cameraGunEntity
+     * @param cameraGunVo
      * @return
      */
     @Override
-    public RStatic addCameraGun(TbCameraGunEntity cameraGunEntity){
-        String cameraGunName = cameraGunEntity.getName();
-        QueryWrapper<TbCameraGunEntity> cameraGunCheckQw = new QueryWrapper<>();
-        cameraGunCheckQw.eq("name",cameraGunName);
-        TbCameraGunEntity cameraGunCheck = tbCameraGunService.getOne(cameraGunCheckQw);
-        if (cameraGunCheck == null){
-            boolean save = tbCameraGunService.save(cameraGunEntity);
-            if (save){
-                return RStatic.ok("添加完成");
+    public RStatic addCameraGun(CameraGunVo cameraGunVo) {
+
+        if (checkCameraGunName(cameraGunVo.getName())){
+
+            TbChannelEntity channelEntity = checkChannel(cameraGunVo.getChannelName());
+            if (channelEntity != null){
+
+                TbCameraGunEntity addCameraGunEntity = new TbCameraGunEntity();
+                BeanUtils.copyProperties(cameraGunVo,addCameraGunEntity);
+                addCameraGunEntity.setChannelId(channelEntity.getId());
+                boolean save = tbCameraGunService.save(addCameraGunEntity);
+                if (save){
+                    return RStatic.ok("插入成功");
+                }else {
+                    return RStatic.error("插入失败");
+                }
             }else {
-                return RStatic.error("添加失败");
+                return RStatic.error("通道名错误");
             }
         }else {
-            return RStatic.error("摄像枪名字已存在");
+            return RStatic.error("摄像枪名已存在");
         }
     }
 
@@ -51,7 +68,8 @@ public class CameraGunServiceImpl implements CameraGunService{
      * @return
      */
     @Override
-    public RStatic deleteCamerGun(Map<String, Object> map){
+    public RStatic deleteCamerGun(Map<String, Object> map) {
+
         ArrayList<String> list = (ArrayList<String>)map.get("ids");
         try {
             if (list != null){
@@ -62,68 +80,88 @@ public class CameraGunServiceImpl implements CameraGunService{
                     return RStatic.error("删除失败");
                 }
             }else {
-                return RStatic.error("内容为空");
+                return RStatic.error("摄像枪id为空");
             }
         }catch (Exception e){
             return RStatic.error("操作有误");
         }
-
     }
 
     /***
      * 摄像枪接口-修改-具体实现
-     * @param cameraGunEntity
+     * @param cameraGunVo
      * @return
      */
     @Override
-    public RStatic updateCameraGun(TbCameraGunEntity cameraGunEntity) {
-        String cameraGunName = cameraGunEntity.getName();
-        QueryWrapper<TbCameraGunEntity> cameraGunCheckQw = new QueryWrapper<>();
-        cameraGunCheckQw.eq("name",cameraGunName);
-        TbCameraGunEntity cameraGunCheck = tbCameraGunService.getOne(cameraGunCheckQw);
-        if (cameraGunCheck == null){
-            boolean save = tbCameraGunService.saveOrUpdate(cameraGunEntity);
-            if (save){
-                return RStatic.ok("添加完成");
+    public RStatic updateCameraGun(CameraGunVo cameraGunVo) {
+        if (checkCameraGunName(cameraGunVo.getName())){
+
+            TbChannelEntity channelEntity = checkChannel(cameraGunVo.getChannelName());
+            if (channelEntity != null){
+
+                TbCameraGunEntity updateCameraGunEntity = new TbCameraGunEntity();
+                BeanUtils.copyProperties(cameraGunVo,updateCameraGunEntity);
+                updateCameraGunEntity.setChannelId(channelEntity.getId());
+                boolean save = tbCameraGunService.saveOrUpdate(updateCameraGunEntity);
+                if (save){
+                    return RStatic.ok("修改成功");
+                }else {
+                    return RStatic.error("修改失败");
+                }
             }else {
-                return RStatic.error("添加失败");
+                return RStatic.error("通道名错误");
             }
         }else {
-            return RStatic.error("摄像枪名字已存在");
+            return RStatic.error("摄像枪名已存在");
         }
     }
-
     /***
      * 摄像枪接口-查询-具体实现
-     * @param limit
+     * @param parameter
      * @param page
      * @param items
      * @return
      */
     @Override
-    public RStatic selectCameraGun(String limit,int page, int items) {
-        IPage<TbCameraGunEntity> cameraGunList = null;
+    public RStatic selectCameraGun(String parameter, int page, int items) {
         try {
-            Page<TbCameraGunEntity> cameraGunPage = new Page<>(page,items);
-            if (limit == null){
-                cameraGunList = tbCameraGunService.page(cameraGunPage,null);
-                return RStatic.ok("查询成功").data("cameraGunList",cameraGunList);
-            }else {
-                QueryWrapper<TbCameraGunEntity> cameraGunQw = new QueryWrapper<>();
-                cameraGunQw
-                        .like("channel_id",limit)
-                        .or()
-                        .like("name",limit)
-                        .or()
-                        .like("note",limit)
-                        .or()
-                        .like("file_dir",limit);
-                cameraGunList = tbCameraGunService.page(cameraGunPage,cameraGunQw);
-                return RStatic.ok("查询成功").data("cameraGunList",cameraGunList);
-            }
-
+            Integer cameraGunCount = tbCameraGunMapper.getCameraGunCount();
+            Integer startInteger = (page-1)*items;
+            List<CameraGunVo> cameraGunVo = tbCameraGunMapper.getCameraGunVo(parameter, startInteger, items);
+            return RStatic.ok("查询成功").data("cameraGunList",cameraGunVo).data("total",cameraGunCount);
         }catch (Exception e){
-            return RStatic.error("操作异常");
+            return RStatic.error("操作异常"+e);
+        }
+    }
+
+    /**
+     * 检查摄像枪名是否重复
+     * @param cameraGunName
+     * @return
+     */
+    private boolean checkCameraGunName(String cameraGunName){
+        QueryWrapper<TbCameraGunEntity> nameCheck = new QueryWrapper<>();
+        nameCheck.eq("name",cameraGunName);
+        TbCameraGunEntity cameraGunCheck = tbCameraGunService.getOne(nameCheck);
+        if (cameraGunCheck == null || cameraGunCheck.getName().equals(cameraGunName) ){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    /***
+     * 检查通道是否存在
+     * @return
+     */
+    private TbChannelEntity checkChannel(String channelName){
+        QueryWrapper<TbChannelEntity> channelQw = new QueryWrapper<>();
+        channelQw.eq("name",channelName);
+        TbChannelEntity channelEntity = tbChannelService.getOne(channelQw);
+        if (channelEntity != null){
+            return channelEntity;
+        }else {
+            return null;
         }
     }
 }

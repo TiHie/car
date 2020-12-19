@@ -1,6 +1,7 @@
 package com.car.service;
 
 import com.car.entity.TbCameraGunEntity;
+import com.car.entity.vo.CameraGunVo;
 import com.car.util.RStatic;
 
 import java.util.Map;
@@ -13,10 +14,10 @@ public interface CameraGunService {
 
     /***
      * 摄像枪接口-添加
-     * @param cameraGunEntity
+     * @param cameraGunVo
      * @return
      */
-    public RStatic addCameraGun(TbCameraGunEntity cameraGunEntity);
+    public RStatic addCameraGun(CameraGunVo cameraGunVo);
 
     /***
      * 摄像枪接口-删除
@@ -27,10 +28,10 @@ public interface CameraGunService {
 
     /***
      * 摄像枪接口-修改
-     * @param cameraGunEntity
+     * @param cameraGunVo
      * @return
      */
-    public RStatic updateCameraGun(TbCameraGunEntity cameraGunEntity);
+    public RStatic updateCameraGun(CameraGunVo cameraGunVo);
 
     /***
      * 摄像枪接口-查询
@@ -38,5 +39,5 @@ public interface CameraGunService {
      * @param items
      * @return
      */
-    public RStatic selectCameraGun(String limit,int page,int items);
+    public RStatic selectCameraGun(String parameter,int page,int items);
 }
