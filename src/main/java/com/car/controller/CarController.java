@@ -1,15 +1,14 @@
 package com.car.controller;
 
+import com.car.entity.dto.SpeedDTO;
 import com.car.service.ScanService;
+import com.car.service.TbCarService;
 import com.car.util.RStatic;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -21,6 +20,8 @@ import java.util.List;
 @RestController
 @CrossOrigin
 public class CarController {
+    @Autowired
+    private TbCarService tbCarService;
 
     @Value("${file.staticAccessPath}")
     private String staticAccessPath;
@@ -65,4 +66,17 @@ public class CarController {
         return RStatic.ok("上传成功").
                 data("errorList",errorList);
     }
+
+    @ApiOperation("点击查看窗口跳出的信息框")
+    @GetMapping("/api/user/channelAllData")
+    public RStatic channelAllData(SpeedDTO speedDTO) {
+        return tbCarService.channelAllData(speedDTO);
+    }
+
+    @ApiOperation("放大图片跳出的信息")
+    @GetMapping("/api/user/channelOneCarData")
+    public RStatic channelOneCarData(SpeedDTO speedDTO) {
+        return tbCarService.channelOneCarData(speedDTO);
+    }
+
 }
