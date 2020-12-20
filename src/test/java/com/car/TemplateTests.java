@@ -75,7 +75,7 @@ class TemplateTests {
         //每页多少
         Integer items = 3;
         //总数
-        Integer gunCount = tbCameraGunMapper.getCameraGunCount();
+        Integer gunCount = tbCameraGunMapper.getCameraGunCount("x");
         //可分多少页 总数/每页多少
         int pages = gunCount / items;
         String str = "二";

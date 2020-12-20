@@ -55,14 +55,14 @@ public class UserController {
 
     /***
      * 用户管理接口-查询
-     * @param limit
+     * @param parameter
      * @param page
      * @param items
      * @return
      */
     @ApiOperation("用户管理接口-查询")
     @GetMapping("/api/v1/user")
-    public RStatic selectUser(String limit,int page,int items){
-        return userService.selectUser(limit, page, items);
+    public RStatic selectUser(String parameter,int page,int items){
+        return userService.selectUser(parameter, page, items);
     }
 }

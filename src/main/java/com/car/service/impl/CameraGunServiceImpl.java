@@ -151,7 +151,7 @@ public class CameraGunServiceImpl implements CameraGunService{
     @Override
     public RStatic selectCameraGun(String parameter, int page, int items) {
         try {
-            Integer cameraGunCount = tbCameraGunMapper.getCameraGunCount();
+            Integer cameraGunCount = tbCameraGunMapper.getCameraGunCount(parameter);
             Integer startInteger = (page-1)*items;
             List<CameraGunVo> cameraGunVo = tbCameraGunMapper.getCameraGunVo(parameter, startInteger, items);
             return RStatic.ok("查询成功").data("cameraGunList",cameraGunVo).data("total",cameraGunCount);
@@ -159,7 +159,6 @@ public class CameraGunServiceImpl implements CameraGunService{
             return RStatic.error("操作异常"+e);
         }
     }
-
     /**
      * 检查摄像枪名是否重复
      * @param cameraGunName

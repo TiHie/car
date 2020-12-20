@@ -1,8 +1,11 @@
 package com.car.mapper;
 
 import com.car.entity.dto.CarMassageDto;
+import com.car.entity.vo.HomePageVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author mowuwalixilo
@@ -33,4 +36,17 @@ public interface HomePageDataMapper {
      */
     public Integer selectNormalCarById(Integer channelId);
 
+    /***
+     * 查询通道总数
+     * @return
+     */
+    public Integer getChannelCount();
+
+    /***
+     * 分页查询首页通道数据
+     * @param startInteger
+     * @param items
+     * @return
+     */
+    public List<HomePageVo> selectHomePageData(Integer startInteger,Integer items);
 }
