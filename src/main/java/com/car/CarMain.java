@@ -38,7 +38,7 @@ public class CarMain {
         TbCameraGunService gunService = run.getBean(TbCameraGunService.class);
         List<OneSpeed> speedList = gunService.getSpeed();
         RuntimeDataUtil.speedMap =
-                new ConcurrentHashMap<>(speedList.stream().collect(Collectors.toMap(e -> e.getId(), e -> e.getSpeed())));
+                new ConcurrentHashMap<>(speedList.stream().collect(Collectors.toMap(e -> e.getId(), e -> e)));
 
         //获取系统环境与系统连接符
         String osName = System.getProperty("os.name");

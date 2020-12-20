@@ -113,7 +113,7 @@ public class ScanServiceImpl implements ScanService {
                 match.setCameraGunId(gunId);
                 //true超速，false没有
                 if (null != match.getSpeed()) {
-                    match.setStatus(match.getSpeed() > RuntimeDataUtil.speedMap.get(gunId));
+                    match.setStatus(match.getSpeed() > RuntimeDataUtil.speedMap.get(gunId).getSpeed());
                 }
                 tbCarEntities.add(match);
             }catch (Exception e){
@@ -132,7 +132,7 @@ public class ScanServiceImpl implements ScanService {
         match.setCarImage(ip+stitch+"/"+fileName);
         match.setCameraGunId(gunId);
         //true超速，false没有
-        match.setStatus(match.getSpeed() > RuntimeDataUtil.speedMap.get(gunId));
+        match.setStatus(match.getSpeed() > RuntimeDataUtil.speedMap.get(gunId).getSpeed());
         tbCarService.save(match);
         return match;
     }
@@ -149,7 +149,7 @@ public class ScanServiceImpl implements ScanService {
                 match.setCarImage(ip+stitch+"/"+fileName);
                 match.setCameraGunId(gunId);
                 //true超速，false没有
-                match.setStatus(match.getSpeed() > RuntimeDataUtil.speedMap.get(gunId));
+                match.setStatus(match.getSpeed() > RuntimeDataUtil.speedMap.get(gunId).getSpeed());
                 result.add(match);
             }catch (Exception e){
                 e.printStackTrace();

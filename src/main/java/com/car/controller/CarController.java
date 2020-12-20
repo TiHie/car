@@ -1,5 +1,6 @@
 package com.car.controller;
 
+import com.car.entity.TbCarEntity;
 import com.car.entity.dto.SpeedDTO;
 import com.car.service.ScanService;
 import com.car.service.TbCarService;
@@ -36,9 +37,9 @@ public class CarController {
     public RStatic uploadFile(MultipartFile multipartFile,@RequestParam("gunId") Integer gunId){
         try{
             multipartFile.transferTo(new File(uploadFolder+multipartFile.getOriginalFilename()));
-            scanService.uploadOne(gunId,multipartFile.getOriginalFilename());
+            TbCarEntity tbCarEntity = scanService.uploadOne(gunId, multipartFile.getOriginalFilename());
             return RStatic.ok("上传成功").
-                    data("url","http://127.0.0.1:8081"+staticAccessPath.replaceAll("\\*","")+multipartFile.getOriginalFilename()).
+                    data("url",tbCarEntity.getCarImage()).
                     data("fileName",multipartFile.getOriginalFilename());
         }catch(Exception e){
             e.printStackTrace();
@@ -62,9 +63,10 @@ public class CarController {
                 errorList.add(multipartFile.getOriginalFilename());
             }
         }
-        scanService.uploadAll(gunId,successList);
-        return RStatic.ok("上传成功").
-                data("errorList",errorList);
+        List<String> saveError = scanService.uploadAll(gunId, successList);
+        return RStatic.ok("上传成功")
+                .data("errorList",errorList)
+                .data("saveError",saveError);
     }
 
     @ApiOperation("点击查看窗口跳出的信息框")
