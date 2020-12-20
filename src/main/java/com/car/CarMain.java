@@ -26,7 +26,6 @@ public class CarMain {
         init(run);
     }
 
-
     //初始化运行时数据
     public static void init(ConfigurableApplicationContext run){
         TbCameraGunService tbCameraGunService = run.getBean(TbCameraGunService.class);
@@ -41,23 +40,36 @@ public class CarMain {
         TbCameraGunService gunService = run.getBean(TbCameraGunService.class);
         List<OneSpeed> speedList = gunService.getSpeed();
         RuntimeDataUtil.speedMap =
-                new ConcurrentHashMap<>(speedList.stream().collect(Collectors.toMap(e -> e.getId(), e -> e.getSpeed())));
-        ScanService scanService = run.getBean(ScanService.class);
-        scanService.scanAndUpload(false);
+                new ConcurrentHashMap<>(speedList.stream().collect(Collectors.toMap(e -> e.getId(), e -> e)));
 
+        //获取系统环境与系统连接符
+        String osName = System.getProperty("os.name");
+        if (osName.contains("Windows")){
+            RuntimeDataUtil.environment = "windows";
+            RuntimeDataUtil.connectStr = "\\";
+        }else {
+            //假定不是 windows 就是 linux
+            RuntimeDataUtil.environment = "linux";
+            RuntimeDataUtil.connectStr = "/";
+            System.out.println("linux");
+        }
 
-        //启动定时任务
         ScheduledExecutorService scheduledExecutorService = run.getBean(ScheduledExecutorService.class);
-        //定时扫描文件夹，每分钟更新一次
-        scheduledExecutorService.schedule(()->{
-            scanService.scanAndUpload(false);
-        },1, TimeUnit.MINUTES);
-
         //定时周期任务，每天 0 点执行，更新扫描的文件夹
+        //启动定时任务
         long oneDay = 24*60*60*1000;
         long remainTime = DateUtil.getRemainTime();
-        scheduledExecutorService.scheduleAtFixedRate(()->{
+        scheduledExecutorService.scheduleWithFixedDelay(()->{
             RuntimeDataUtil.today = DateUtil.getTodayMatchStr();
         },remainTime+1,oneDay,TimeUnit.MILLISECONDS);
+
+        ScanService scanService = run.getBean(ScanService.class);
+
+        //定时扫描文件夹，每分钟更新一次
+        scheduledExecutorService.scheduleWithFixedDelay(()->{
+            scanService.scanAndUpload(false);
+        },0,1, TimeUnit.MINUTES);
+
+
     }
 }

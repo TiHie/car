@@ -1,6 +1,8 @@
 package com.car.util;
 
 import com.car.entity.TbCameraGunEntity;
+import com.car.entity.TbChannelEntity;
+import com.car.entity.bean.OneSpeed;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,10 +24,18 @@ public class RuntimeDataUtil {
     //缓存当日0点的时间戳 k:yyyyMMdd000000  v:当日o时时间戳
     public static Map<String, Date> dateMap = new ConcurrentHashMap<>();
     //缓存摄像枪与速度 k:摄像枪id  v:限制速度
-    public static Map<Integer, Integer> speedMap = null;
+    public static Map<Integer, OneSpeed> speedMap = null;
 
     //日期格式化对象
     public static SimpleDateFormat formatDay = new SimpleDateFormat("d");
     public static SimpleDateFormat formatMonth = new SimpleDateFormat("M");
     public static SimpleDateFormat formatYear = new SimpleDateFormat("yyyy");
+    
+    //系统运行环境
+    public static String environment = null;
+    //系统连接符
+    public static String connectStr = null;
+
+    //缓存的一些正则表达式，用于匹配文件与目录
+    public static Map<String,Pattern> matchPattern = new ConcurrentHashMap<>();
 }

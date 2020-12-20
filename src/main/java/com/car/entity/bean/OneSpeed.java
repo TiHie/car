@@ -11,5 +11,6 @@ import lombok.ToString;
 @AllArgsConstructor
 public class OneSpeed {
     private Integer id;
+    private Integer channelId;
     private Integer speed;
 }

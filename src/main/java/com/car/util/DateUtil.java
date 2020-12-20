@@ -20,7 +20,6 @@ public class DateUtil {
             parse = simpleDateFormat.parse(dateStr);
         } catch (ParseException e) {
             //仅做本地测试使用
-            e.printStackTrace();
             return new Date();//解析失败，返回当前时间
         }
         return parse;
@@ -52,7 +51,7 @@ public class DateUtil {
 
     //获取当日日期 (正则)
     public static String getTodayMatchStr(){
-        Date date = new Date(1579337940000L);
+        Date date = new Date();
         String day = RuntimeDataUtil.formatDay.format(date);
         String month = RuntimeDataUtil.formatMonth.format(date);
         String year = RuntimeDataUtil.formatYear.format(date);

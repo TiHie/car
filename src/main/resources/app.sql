@@ -29,6 +29,7 @@ CREATE TABLE tb_camera_gun(
                               split_str VARCHAR(32) COMMENT '分隔字符串',
                               file_dir VARCHAR(128) COMMENT '摄像枪目录',
                               auto_scan BOOLEAN COMMENT '是否自动扫描通道文件',
+                              location VARCHAR(256) COMMENT '摄像枪地址',
                               create_time DATETIME,
                               update_time DATETIME
 )CHARSET=utf8 ENGINE=InnoDb;

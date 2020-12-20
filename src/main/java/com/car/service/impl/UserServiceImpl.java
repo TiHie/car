@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
         QueryWrapper<TbUserEntity> userCheckQw = new QueryWrapper<>();
         userCheckQw.eq("username",username);
         TbUserEntity userCheck = tbUserService.getOne(userCheckQw);
-        if (userCheck == null){
+        if (userCheck == null || userCheck.getUsername().equals(username)){
             boolean saveOrUpdate = tbUserService.saveOrUpdate(tbUserEntity);
             if (saveOrUpdate){
                 return RStatic.ok("修改成功");

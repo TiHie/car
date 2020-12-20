@@ -3,13 +3,17 @@ package com.car.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.car.entity.TbCameraGunEntity;
 import com.car.entity.TbChannelEntity;
+import com.car.entity.bean.OneSpeed;
 import com.car.service.ChannelService;
 import com.car.service.TbChannelService;
 import com.car.util.RStatic;
+import com.car.util.RuntimeDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -62,7 +66,7 @@ public class ChannelServiceImpl implements ChannelService {
                     return RStatic.error("删除失败");
                 }
             }else {
-                return RStatic.error("内容为空");
+                return RStatic.error("通道id为空");
             }
         }catch (Exception e){
             return RStatic.error("操作有误");
@@ -80,9 +84,28 @@ public class ChannelServiceImpl implements ChannelService {
         QueryWrapper<TbChannelEntity> channelCheckQw = new QueryWrapper<>();
         channelCheckQw.eq("name",channelName);
         TbChannelEntity channelCheck = tbChannelService.getOne(channelCheckQw);
-        if (channelCheck == null){
+        if (channelCheck == null || channelCheck.getName().equals(channelName)){
             boolean saveOrUpdate = tbChannelService.saveOrUpdate(channelEntity);
             if (saveOrUpdate){
+                //更新全局数据域
+                if (channelEntity.getSpeed() != null && channelEntity.getSpeed() != 0){
+                    //速度改变，更新 speedMap
+                    List<TbCameraGunEntity> updateList = new ArrayList<>();
+                    RuntimeDataUtil.cameraGunEntityMap.forEach(
+                            (k,v)->{
+                                if (v.getChannelId() == channelEntity.getId()){
+                                    updateList.add(v);
+                                }
+                            }
+                    );
+                    updateList.forEach(e -> {
+                        RuntimeDataUtil.speedMap.put(e.getId(),new OneSpeed(
+                                e.getId(),
+                                e.getChannelId(),
+                                channelEntity.getSpeed()
+                        ));
+                    });
+                }
                 return RStatic.ok("修改成功");
             }else {
                 return RStatic.error("修改失败");
