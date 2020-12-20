@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import java.util.Map;
+import java.util.Date;
 
 /**
  * @Author FDH
@@ -16,6 +15,17 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SpeedVO {
-//    private Map<String, Integer> map;
-    private Map<Integer,Map<String, Integer>> hourMap;
+    private Integer carId;
+    private Integer cameraGunId;
+    private Integer channelId;
+    private String channelName;
+    private String cameraGunName;
+    private Date shootingDate;
+    private Date shootingTime;
+    private String licensePlate;
+    private String licensePlateColor;
+    private Integer status;
+    private Integer carSpeed;
+    private Integer channelSpeed;
+    private String cameraGunLocation;
 }

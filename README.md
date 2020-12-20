@@ -10,3 +10,29 @@
 
 ##注意
 - 摄像枪目录不用加前缀/，所有配置的文件目录要加后缀/
+
+shootingTime : 拍摄时间
+
+carColor     : 车辆颜色
+
+carPlate     : 车牌号
+
+channelName  : 通道名称
+
+carSpeed     : 车速
+
+如果设置分隔符为_
+
+那么可能有如下表达式
+
+shootingTime_carColor_carPlate_channelName_carSpeed
+
+如果俩个字段连接在一起，例如通道名称和车速
+
+channelName:通道名称的正则表达式#carSpeed:车速的正则表达式
+
+(正则表达式最好不要包含分隔符，:，以及#)
+
+shootingTime_carColor_carPlate_channelName:卡口车速#carSpeed:[1-9]
+
+shootingTime_carColor_carPlate_channelName:卡口车速#carSpeed:[1-9]

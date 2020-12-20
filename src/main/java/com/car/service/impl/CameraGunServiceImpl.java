@@ -3,12 +3,14 @@ package com.car.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.car.entity.TbCameraGunEntity;
 import com.car.entity.TbChannelEntity;
+import com.car.entity.bean.OneSpeed;
 import com.car.entity.vo.CameraGunVo;
 import com.car.mapper.TbCameraGunMapper;
 import com.car.service.CameraGunService;
 import com.car.service.TbCameraGunService;
 import com.car.service.TbChannelService;
 import com.car.util.RStatic;
+import com.car.util.RuntimeDataUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +52,20 @@ public class CameraGunServiceImpl implements CameraGunService{
                 addCameraGunEntity.setChannelId(channelEntity.getId());
                 boolean save = tbCameraGunService.save(addCameraGunEntity);
                 if (save){
+                    //更新全局数据域
+                    RuntimeDataUtil.cameraGunEntityMap.put(addCameraGunEntity.getId(),addCameraGunEntity);
+                    RuntimeDataUtil.speedMap.put(addCameraGunEntity.getId(),new OneSpeed(
+                            addCameraGunEntity.getId(),
+                            channelEntity.getId(),
+                            channelEntity.getSpeed()
+                    ));
+                    if (null != addCameraGunEntity.getChannelId() && 0 != addCameraGunEntity.getChannelId()){
+                        RuntimeDataUtil.speedMap.put(addCameraGunEntity.getId(),new OneSpeed(
+                                addCameraGunEntity.getId(),
+                                addCameraGunEntity.getChannelId(),
+                                channelEntity.getSpeed()
+                        ));
+                    }
                     return RStatic.ok("插入成功");
                 }else {
                     return RStatic.error("插入失败");
@@ -75,6 +91,12 @@ public class CameraGunServiceImpl implements CameraGunService{
             if (list != null){
                 boolean removeByIds = tbCameraGunService.removeByIds(list);
                 if (removeByIds){
+                    list.forEach(id->{
+                        //更新全局数据域
+                        RuntimeDataUtil.cameraGunEntityMap.remove(Integer.valueOf(id));
+                        RuntimeDataUtil.speedMap.remove(Integer.valueOf(id));
+                    });
+
                     return RStatic.ok("删除成功");
                 }else {
                     return RStatic.error("删除失败");
@@ -104,6 +126,10 @@ public class CameraGunServiceImpl implements CameraGunService{
                 updateCameraGunEntity.setChannelId(channelEntity.getId());
                 boolean save = tbCameraGunService.saveOrUpdate(updateCameraGunEntity);
                 if (save){
+                    //更新全局数据域
+                    TbCameraGunEntity byId = tbCameraGunService.getById(updateCameraGunEntity.getId());
+                    RuntimeDataUtil.cameraGunEntityMap.put(byId.getId(),byId);
+
                     return RStatic.ok("修改成功");
                 }else {
                     return RStatic.error("修改失败");
