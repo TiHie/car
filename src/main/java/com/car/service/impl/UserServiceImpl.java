@@ -8,6 +8,7 @@ import com.car.service.TbUserService;
 import com.car.service.UserService;
 import com.car.util.Md5Util;
 import com.car.util.RStatic;
+import com.car.util.RuntimeDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -133,6 +134,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             return RStatic.error("账号或密码错误");
         }else {
+            RuntimeDataUtil.roleMap.put(user.getUsername(),user.getRole());
             return RStatic.ok("登录成功").data("user",user);
         }
     }

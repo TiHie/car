@@ -11,7 +11,9 @@ import com.car.service.TbCameraGunService;
 import com.car.service.TbCarService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.car.service.TbChannelService;
+import com.car.util.DateUtil;
 import com.car.util.RStatic;
+import com.car.util.RuntimeDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +40,7 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
      */
     @Override
     public RStatic channelAllData(SpeedDTO speedDTO) {
-        try {
+//        try {
             TbChannelEntity channel = new TbChannelEntity();
             if (speedDTO.getChannelId() != null) {
                 QueryWrapper<TbChannelEntity> wrapper = new QueryWrapper<>();
@@ -51,11 +53,10 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
             Map<String, Integer> stringIntegerMap = new HashMap<>();
 
 
-            if (speedDTO.getStartTime()!=null && speedDTO.getEndTime() != null) {
+            if (speedDTO.getEndTime() != null) {
 
                 cameraGunListCars = tbCarMapper.getMoreDayCars(speedDTO);
                 stringIntegerMap = tbCarMapper.moreDayRatio(speedDTO);
-
             } else {
                 cameraGunListCars = tbCarMapper.getOneDayCars(speedDTO);
                 stringIntegerMap = tbCarMapper.oneDayRatio(speedDTO);
@@ -70,10 +71,10 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
             } else {
                 return RStatic.ok("查询成功").data("carPage", carPage).data("dayRatio", stringIntegerMap).data("page", speedDTO.getPage()).data("items", speedDTO.getItems());
             }
-        } catch (Exception e) {
-            System.out.println("错误原因：" + e.getMessage());
-        }
-        return RStatic.error("错误");
+//        } catch (Exception e) {
+//            System.out.println("错误原因：" + e.getMessage());
+//        }
+//        return RStatic.error("错误");
     }
 
     @Override
@@ -88,19 +89,19 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             String startTimeStr = formatter.format(speedDTO.getStartTime());
             long day = getDaySub(startTimeStr, formatter.format(new Date()));
-            System.out.println("====day" + day);
             if (day ==0) {
                 hourInt = Integer.parseInt(df.format(hour));
-                for (int i = 0; i < hourInt; i++) {
-                    Map<String, Integer> hourMap = tbCarMapper.hourRatio(speedDTO, i + 1);
-                    map.put(i + 1, hourMap);
-
+                System.out.println("==="+hourInt);
+                for (int i = 0; i <= hourInt; i++) {
+                    Map<String, Integer> hourMap = tbCarMapper.hourRatio(speedDTO, i);
+                    map.put(i, hourMap);
                 }
             }else if (day >= 1) {
                 hourInt = 24;
                 for (int i = 0; i < hourInt; i++) {
-                    Map<String, Integer> hourMap = tbCarMapper.hourRatio(speedDTO, i + 1);
-                    map.put(i + 1, hourMap);
+                    Map<String, Integer> hourMap = tbCarMapper.hourRatio(speedDTO, i);
+                    System.out.println("=="+hourMap.values());
+                    map.put(i, hourMap);
                 }
             }
         }

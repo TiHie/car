@@ -122,7 +122,7 @@
         <if test="speedDTO.startTime != null  ">
             and shooting_date = #{speedDTO.startTime}
         </if>
-        <if test="hour != null  and hour != '' ">
+        <if test="hour != null ">
             and hour_time = #{hour}
         </if>
         <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
@@ -134,13 +134,13 @@
         from tb_car
         <where>
             <if test="speedDTO.startTime != null  ">
-                shooting_date = #{speedDTO.startTime} and
+                shooting_date = #{speedDTO.startTime}
             </if>
-            <if test=" hour != null  and hour != '' ">
-                hour_time = #{hour} and
+            <if test=" hour != null ">
+                and hour_time = #{hour}
             </if>
             <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
-                camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
+                and camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
             </if>
         </where>
     </select>
