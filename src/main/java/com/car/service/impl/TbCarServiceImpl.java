@@ -54,12 +54,10 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
             if (speedDTO.getStartTime()!=null && speedDTO.getEndTime() != null) {
 
                 cameraGunListCars = tbCarMapper.getMoreDayCars(speedDTO);
-                System.out.println("===="+cameraGunListCars.get(0));
                 stringIntegerMap = tbCarMapper.moreDayRatio(speedDTO);
 
             } else {
                 cameraGunListCars = tbCarMapper.getOneDayCars(speedDTO);
-                System.out.println("==s"+cameraGunListCars.get(0));
                 stringIntegerMap = tbCarMapper.oneDayRatio(speedDTO);
             }
 
@@ -89,14 +87,20 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             String startTimeStr = formatter.format(speedDTO.getStartTime());
-            long isTime = getDaySub(startTimeStr, formatter.format(new Date()));
-            System.out.println("====isTime" + isTime);
-            if (isTime ==0) {
+            long day = getDaySub(startTimeStr, formatter.format(new Date()));
+            System.out.println("====day" + day);
+            if (day ==0) {
                 hourInt = Integer.parseInt(df.format(hour));
                 for (int i = 0; i < hourInt; i++) {
                     Map<String, Integer> hourMap = tbCarMapper.hourRatio(speedDTO, i + 1);
                     map.put(i + 1, hourMap);
 
+                }
+            }else if (day >= 1) {
+                hourInt = 24;
+                for (int i = 0; i < hourInt; i++) {
+                    Map<String, Integer> hourMap = tbCarMapper.hourRatio(speedDTO, i + 1);
+                    map.put(i + 1, hourMap);
                 }
             }
         }
@@ -106,10 +110,10 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
 
         if (speedDTO.getStartTime() != null && speedDTO.getChannelId() != null) {
             Map<String, Integer> stringIntegerMap = tbCarMapper.oneDayRatio(speedDTO);
-            return RStatic.ok("查询成功").data("car", car).data("hourRatio", map).data("dayRatio", stringIntegerMap).data("page", speedDTO.getPage()).data("items", speedDTO.getItems());
+            return RStatic.ok("查询成功").data("car", car).data("hourRatio", map).data("dayRatio", stringIntegerMap);
 
         } else {
-            return RStatic.ok("查询成功").data("car", car).data("hourRatio", map).data("page", speedDTO.getPage()).data("items", speedDTO.getItems());
+            return RStatic.ok("查询成功").data("car", car).data("hourRatio", map);
 
         }
     }

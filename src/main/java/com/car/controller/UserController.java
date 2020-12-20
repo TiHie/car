@@ -65,4 +65,33 @@ public class UserController {
     public RStatic selectUser(String limit,int page,int items){
         return userService.selectUser(limit, page, items);
     }
+
+
+
+    /**
+     * 用户登录
+     * @param userName
+     * @param password
+     * @return
+     */
+    @ApiOperation("用户登录")
+    @PostMapping("/api/v1/user/login")
+    public RStatic login(String userName, String password){
+        return userService.login(userName, password);
+    }
+
+    /**
+     * 管理员生成账号
+     * @param userName
+     * @param password
+     * @param avatar
+     * @param remark
+     * @return
+     */
+    @ApiOperation("管理员注册账号")
+    @PostMapping("/api/v1/user/register")
+    public RStatic register(String userName, String password, String avatar, String remark) {
+        return userService.register(userName, password, avatar, remark);
+    }
+
 }

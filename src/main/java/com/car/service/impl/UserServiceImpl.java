@@ -124,4 +124,36 @@ public class UserServiceImpl implements UserService {
             return RStatic.error("操作有误");
         }
     }
+
+    @Override
+    public RStatic login(String userName, String password) {
+        QueryWrapper<TbUserEntity> userWrapper = new QueryWrapper<>();
+        userWrapper.eq("username",userName).eq("password",password);
+        TbUserEntity user = tbUserService.getOne(userWrapper);
+        if (user == null) {
+            return RStatic.error("账号或密码错误");
+        }else {
+            return RStatic.ok("登录成功").data("user",user);
+        }
+    }
+
+    @Override
+    public RStatic register(String userName, String password, String avatar, String remark) {
+        TbUserEntity userEntity = new TbUserEntity();
+        userEntity.setUsername(userName);
+        userEntity.setPassword(password);
+        userEntity.setRemark(remark);
+        userEntity.setAvatar(avatar);
+        userEntity.setRole("操作员");
+        try {
+            boolean save = tbUserService.save(userEntity);
+            if (save) {
+                return RStatic.ok("注册成功");
+            }else {
+                return RStatic.error("注册失败");
+            }
+        }catch (Exception e) {
+            return RStatic.error(e.getMessage());
+        }
+    }
 }

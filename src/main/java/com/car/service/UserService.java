@@ -40,4 +40,22 @@ public interface UserService {
      * @return
      */
     public RStatic selectUser(String limit,int page,int items);
+
+    /**
+     * 用户登录
+     * @param userName
+     * @param password
+     * @return
+     */
+    public RStatic login(String userName,String password);
+
+    /**
+     * 管理员生成账号
+     * @param userName
+     * @param password
+     * @param avatar
+     * @param remark
+     * @return
+     */
+    public RStatic register(String userName,String password,String avatar,String remark);
 }
