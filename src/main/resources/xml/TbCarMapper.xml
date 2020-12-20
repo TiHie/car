@@ -18,7 +18,7 @@
         tb_car.id carId,camera_gun_id,tb_channel.id channelId,tb_channel.name channelName,
         shooting_date,shooting_time,license_plate,license_plate_color,status,
         tb_car.speed  carSpeed,tb_channel.speed channelSpeed,
-        tb_camera_gun.name cameraGunName,tb_camera_gun.location cameraGunLocation
+        tb_camera_gun.name cameraGunName,tb_camera_gun.location cameraGunLocation,car_image
 
         from tb_car,tb_camera_gun,tb_channel where tb_car.camera_gun_id = tb_camera_gun.id
         and tb_channel.id = tb_camera_gun.channel_id
@@ -47,7 +47,7 @@
         tb_car.id carId,camera_gun_id,tb_channel.id channelId,tb_channel.name channelName,
         shooting_date,shooting_time,license_plate,license_plate_color,status,
         tb_car.speed  carSpeed,tb_channel.speed channelSpeed,
-        tb_camera_gun.name  cameraGunName,tb_camera_gun.location cameraGunLocation
+        tb_camera_gun.name  cameraGunName,tb_camera_gun.location cameraGunLocation,car_image
         from tb_car,tb_camera_gun,tb_channel where tb_car.camera_gun_id = tb_camera_gun.id
         and tb_channel.id = tb_camera_gun.channel_id
 
@@ -122,7 +122,7 @@
         <if test="speedDTO.startTime != null  ">
             and shooting_date = #{speedDTO.startTime}
         </if>
-        <if test="hour != null  and hour != '' ">
+        <if test="hour != null ">
             and hour_time = #{hour}
         </if>
         <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
@@ -134,13 +134,13 @@
         from tb_car
         <where>
             <if test="speedDTO.startTime != null  ">
-                shooting_date = #{speedDTO.startTime} and
+                shooting_date = #{speedDTO.startTime}
             </if>
-            <if test=" hour != null  and hour != '' ">
-                hour_time = #{hour} and
+            <if test=" hour != null ">
+                and hour_time = #{hour}
             </if>
             <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
-                camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
+                and camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
             </if>
         </where>
     </select>

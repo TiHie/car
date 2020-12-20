@@ -61,4 +61,11 @@ public class DateUtil {
                 +(day.length()==1?"[0-9]*"+day:day)+"日";
         return result;
     }
+    public static Date getTodayDate() throws ParseException {
+        String todayStr = getTodayStr();
+        String format = "yyyy年MM月dd日";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+        Date parse = simpleDateFormat.parse(todayStr);
+        return parse;
+    }
 }
