@@ -23,4 +23,5 @@ public interface HomePageService {
      * @return
      */
     public RStatic homePage(Integer page,Integer items);
+
 }

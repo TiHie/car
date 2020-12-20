@@ -8,6 +8,7 @@ import com.car.service.TbUserService;
 import com.car.service.UserService;
 import com.car.util.Md5Util;
 import com.car.util.RStatic;
+import com.car.util.RuntimeDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -107,7 +108,7 @@ public class UserServiceImpl implements UserService {
     public RStatic selectUser(String limit, int page, int items) {
         IPage<TbUserEntity> userPageList = null;
         try {
-            Page<TbUserEntity> userPage = new Page<>(page,items);
+            Page<TbUserEntity> userPage = new Page<>(page,items,true);
             if (limit == null){
                 userPageList = tbUserService.page(userPage,null);
                 return RStatic.ok("查询成功").data("userPageList",userPageList);
@@ -122,6 +123,39 @@ public class UserServiceImpl implements UserService {
             }
         }catch (Exception e){
             return RStatic.error("操作有误");
+        }
+    }
+
+    @Override
+    public RStatic login(String userName, String password) {
+        QueryWrapper<TbUserEntity> userWrapper = new QueryWrapper<>();
+        userWrapper.eq("username",userName).eq("password",password);
+        TbUserEntity user = tbUserService.getOne(userWrapper);
+        if (user == null) {
+            return RStatic.error("账号或密码错误");
+        }else {
+            RuntimeDataUtil.roleMap.put(user.getUsername(),user.getRole());
+            return RStatic.ok("登录成功").data("user",user);
+        }
+    }
+
+    @Override
+    public RStatic register(String userName, String password, String avatar, String remark) {
+        TbUserEntity userEntity = new TbUserEntity();
+        userEntity.setUsername(userName);
+        userEntity.setPassword(password);
+        userEntity.setRemark(remark);
+        userEntity.setAvatar(avatar);
+        userEntity.setRole("操作员");
+        try {
+            boolean save = tbUserService.save(userEntity);
+            if (save) {
+                return RStatic.ok("注册成功");
+            }else {
+                return RStatic.error("注册失败");
+            }
+        }catch (Exception e) {
+            return RStatic.error(e.getMessage());
         }
     }
 }

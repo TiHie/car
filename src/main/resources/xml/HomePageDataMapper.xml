@@ -14,5 +14,19 @@
         SELECT COUNT(tb_car.id) AS normal_car_count FROM tb_car JOIN tb_camera_gun ON tb_car.camera_gun_id = tb_camera_gun.id JOIN tb_channel ON tb_camera_gun.channel_id = tb_channel.id WHERE `status` = 0 AND tb_channel.id = #{channelId}
     </select>
 
+    <select id="selectHomePageData" resultType="com.car.entity.vo.HomePageVo">
+        SELECT channel.id AS id, channel.`name` AS `name`, image
+        FROM tb_camera_gun AS camera
+        JOIN tb_channel AS channel ON camera.channel_id = channel.id
+        JOIN (select car.camera_gun_id,car.shooting_time,car.car_image AS image FROM tb_car AS car JOIN(SELECT camera_gun_id,max(shooting_time) shooting_time FROM tb_car GROUP BY camera_gun_id) AS st ON st.shooting_time= car.shooting_time AND st.camera_gun_id = car.camera_gun_id) AS car ON car.camera_gun_id = camera.id
+        WHERE channel.is_deleted = 0
+        LIMIT #{startInteger},#{items}
+    </select>
+    <select id="getChannelCount" resultType="java.lang.Integer">
+         SELECT COUNT(*)
+         FROM tb_channel
+         WHERE is_deleted = 0
+    </select>
+
 
 </mapper>

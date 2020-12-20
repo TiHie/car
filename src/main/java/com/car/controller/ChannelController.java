@@ -56,14 +56,14 @@ public class ChannelController {
 
     /***
      * 通道表接口-查询
-     * @param limit
+     * @param parameter
      * @param page
      * @param items
      * @return
      */
     @GetMapping("/api/v1/channel")
     @ApiOperation("通道表接口-查询")
-    public RStatic seleteChannel(String limit,int page,int items){
-        return channelService.selectChannel(limit, page, items);
+    public RStatic seleteChannel(String parameter,int page,int items){
+        return channelService.selectChannel(parameter, page, items);
     }
 }
