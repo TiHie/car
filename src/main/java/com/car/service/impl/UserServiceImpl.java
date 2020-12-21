@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public RStatic deleteUser(Map<String, Object> map) {
-        ArrayList<String> userList = (ArrayList<String>)map.get("ids");
+        ArrayList<Integer> userList = (ArrayList<Integer>)map.get("ids");
         if (userList == null){
             return RStatic.error("删除内容为空");
         }else {
