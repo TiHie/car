@@ -56,7 +56,7 @@ public class ChannelServiceImpl implements ChannelService {
      */
     @Override
     public RStatic deleteChannel(Map<String, Object> map) {
-        ArrayList<String> channelList = (ArrayList<String>)map.get("ids");
+        ArrayList<Integer> channelList = (ArrayList<Integer>)map.get("ids");
         try {
             if (channelList != null){
                 boolean removeByIds = tbChannelService.removeByIds(channelList);

@@ -26,11 +26,11 @@
         <if test="speedDTO.startTime != null  and speedDTO.endTime != null ">
             and shooting_date BETWEEN #{speedDTO.startTime} AND #{speedDTO.endTime}
         </if>
-        <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
+        <if test="speedDTO.channelId != null  ">
             and camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
         </if>
 
-        <if test="speedDTO.status != null and speedDTO.status != '' ">
+        <if test="speedDTO.status != null ">
             and status = #{speedDTO.status}
         </if>
         <if test="speedDTO.licensePlate != null and speedDTO.licensePlate != '' ">
@@ -54,11 +54,11 @@
         <if test="speedDTO.startTime != null   ">
             and shooting_date = #{speedDTO.startTime}
         </if>
-        <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
+        <if test="speedDTO.channelId != null  ">
             and camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
         </if>
 
-        <if test="speedDTO.status != null and speedDTO.status != '' ">
+        <if test="speedDTO.status != null  ">
             and status = #{speedDTO.status}
         </if>
         <if test="speedDTO.licensePlate != null and speedDTO.licensePlate != '' ">
@@ -75,7 +75,7 @@
         <if test="speedDTO.startTime != null  and speedDTO.endTime != null ">
             and shooting_date BETWEEN #{speedDTO.startTime} AND #{speedDTO.endTime}
         </if>
-        <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
+        <if test="speedDTO.channelId != null ">
             and camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
         </if>
         )
@@ -86,7 +86,7 @@
             <if test="speedDTO.startTime != null and speedDTO.endTime != null">
                 shooting_date BETWEEN #{speedDTO.startTime} AND #{speedDTO.endTime}
             </if>
-            <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
+            <if test="speedDTO.channelId != null  ">
                 and camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
             </if>
         </where>
@@ -99,7 +99,7 @@
         <if test="speedDTO.startTime != null  ">
             and shooting_date = #{speedDTO.startTime}
         </if>
-        <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
+        <if test="speedDTO.channelId != null  ">
             and camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
         </if>
         ) as overSpeed
@@ -110,7 +110,7 @@
             <if test="speedDTO.startTime != null ">
                 shooting_date = #{speedDTO.startTime}
             </if>
-            <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
+            <if test="speedDTO.channelId != null  ">
                 and camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
             </if>
         </where>
@@ -125,7 +125,7 @@
         <if test="hour != null ">
             and hour_time = #{hour}
         </if>
-        <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
+        <if test="speedDTO.channelId != null  ">
             and camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
         </if>
         ) as overSpeed
@@ -139,7 +139,7 @@
             <if test=" hour != null ">
                 and hour_time = #{hour}
             </if>
-            <if test="speedDTO.channelId != null and speedDTO.channelId != '' ">
+            <if test="speedDTO.channelId != null  ">
                 and camera_gun_id in (select id from tb_camera_gun where channel_id = #{speedDTO.channelId})
             </if>
         </where>
