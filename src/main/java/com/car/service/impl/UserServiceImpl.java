@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
     public RStatic selectUser(String limit, int page, int items) {
         IPage<TbUserEntity> userPageList = null;
         try {
-            Page<TbUserEntity> userPage = new Page<>(page,items);
+            Page<TbUserEntity> userPage = new Page<>(page,items,true);
             if (limit == null){
                 userPageList = tbUserService.page(userPage,null);
                 return RStatic.ok("查询成功").data("userPageList",userPageList);

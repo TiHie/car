@@ -7,6 +7,7 @@ import com.car.entity.TbCameraGunEntity;
 import com.car.entity.TbCarEntity;
 import com.car.entity.TbChannelEntity;
 import com.car.entity.vo.ChannelVo;
+import com.car.entity.vo.HomePageVo;
 import com.car.mapper.HomePageDataMapper;
 import com.car.service.HomePageService;
 import com.car.service.TbCameraGunService;
@@ -57,29 +58,9 @@ public class HomePageServiceImpl implements HomePageService {
      */
     @Override
     public RStatic homePage(Integer page, Integer items) {
-
-        IPage<TbChannelEntity> channelPage = tbChannelService.page(new Page<>(page, items));
-        List<Integer> channelIds = null;
-        List<Integer> gunIds = null;
-        channelIds = channelPage.getRecords().stream().map(e -> e.getId()).collect(toList());
-        gunIds = tbCameraGunService.list(new QueryWrapper<TbCameraGunEntity>()
-                .in("channel_id",channelIds))
-                .stream().map(e->e.getId())
-                .collect(toList());
-        List<TbCarEntity> list = tbCarService.list(new QueryWrapper<TbCarEntity>().in("camera_gun_id", gunIds)
-                .orderByDesc("create_time").last("limit 1"));
-
-        List<TbChannelEntity> records = channelPage.getRecords();
-        List<ChannelVo> channelVoList = new ArrayList<>();
-
-        for (int i=0;i<list.size() && i< records.size();i++) {
-            ChannelVo channelVo = new ChannelVo();
-            channelVo.setChannelEntity(records.get(i));
-            channelVo.setImage(list.get(i).getCarImage());
-            channelVoList.add(channelVo);
-        }
-        Page<ChannelVo> pageVo = new Page<>(page,items);
-        pageVo.setRecords(channelVoList);
-        return RStatic.ok("查询成功").data("pageVo",pageVo);
+        Integer channelCount = homePageDataMapper.getChannelCount();
+        Integer startInteger = (page-1)*items;
+        List<HomePageVo> homePageVoList = homePageDataMapper.selectHomePageData(startInteger, items);
+        return RStatic.ok("查询成功").data("homePageVoList",homePageVoList).data("total",channelCount);
     }
 }

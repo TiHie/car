@@ -70,6 +70,5 @@ public class CarMain {
             scanService.scanAndUpload(false);
         },0,1, TimeUnit.MINUTES);
 
-
     }
 }

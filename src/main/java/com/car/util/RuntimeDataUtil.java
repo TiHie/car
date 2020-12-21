@@ -38,5 +38,7 @@ public class RuntimeDataUtil {
 
     //缓存的一些正则表达式，用于匹配文件与目录
     public static Map<String,Pattern> matchPattern = new ConcurrentHashMap<>();
+
+    //缓存角色与用户的映射
     public static Map<String,String> roleMap = new ConcurrentHashMap<>();
 }
