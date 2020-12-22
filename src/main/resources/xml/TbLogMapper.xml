@@ -27,5 +27,6 @@
                 <![CDATA[ and oper_time <=  #{LogDTO.endTime}  ]]>
             </if>
         </where>
+        order by create_time desc limit #{LogDTO.page},#{LogDTO.items}
     </select>
 </mapper>

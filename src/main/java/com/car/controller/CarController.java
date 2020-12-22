@@ -7,7 +7,6 @@ import com.car.service.TbCarService;
 import com.car.util.RStatic;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -85,7 +84,7 @@ public class CarController {
 
     @ApiOperation("导出历史查询")
     @GetMapping("/api/user/exportCars")
-    public XSSFWorkbook export(SpeedDTO speedDTO) {
+    public RStatic export(SpeedDTO speedDTO) {
         return tbCarService.export(speedDTO);
     }
 

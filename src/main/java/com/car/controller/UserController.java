@@ -66,17 +66,15 @@ public class UserController {
         return userService.selectUser(parameter, page, items);
     }
 
-
-
     /**
      * 用户登录
-     * @param tbUserEntity
+     * @param map
      * @return
      */
     @ApiOperation("用户登录")
     @PostMapping("/api/v1/user/login")
-    public RStatic login(@RequestBody TbUserEntity tbUserEntity) throws Exception{
-        return userService.login(tbUserEntity);
+    public RStatic login(@RequestBody Map<String, Object> map) throws Exception{
+        return userService.login(map);
     }
 
     /**
@@ -89,5 +87,4 @@ public class UserController {
     public RStatic register(@RequestBody TbUserEntity tbUserEntity) throws Exception {
         return userService.register(tbUserEntity);
     }
-
 }

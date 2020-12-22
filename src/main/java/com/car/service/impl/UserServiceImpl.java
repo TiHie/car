@@ -12,6 +12,8 @@ import com.car.util.RStatic;
 import com.car.util.RuntimeDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -128,15 +130,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RStatic login(TbUserEntity tbUserEntity) throws Exception {
+    public RStatic login(@RequestBody Map<String, Object> map) throws Exception {
         UserVO userVO = new UserVO();
-        String pwd = Md5Util.MD5Hax(tbUserEntity.getPassword());
-        System.out.println("userName:"+tbUserEntity.getUsername());
+        String pwd = Md5Util.MD5Hax(map.get("password").toString());
+        System.out.println("userName:"+map.get("username"));
         System.out.println("pwd:"+pwd);
 
         QueryWrapper<TbUserEntity> userWrapper = new QueryWrapper<>();
 
-        userWrapper.eq("username",tbUserEntity.getUsername()).eq("password",pwd);
+        userWrapper.eq("username",map.get("username")).eq("password",pwd);
         TbUserEntity user = tbUserService.getOne(userWrapper);
         if (user == null) {
             return RStatic.error("账号或密码错误");
@@ -166,11 +168,18 @@ public class UserServiceImpl implements UserService {
         userEntity.setAvatar(tUser.getAvatar());
         userEntity.setRole(tUser.getRole());
         try {
-            boolean save = tbUserService.save(userEntity);
-            if (save) {
-                return RStatic.ok("注册成功");
+            QueryWrapper<TbUserEntity> userWrapper = new QueryWrapper<>();
+            userWrapper.eq("username",tUser.getUsername());
+            TbUserEntity one = tbUserService.getOne(userWrapper);
+            if (one == null) {
+                boolean save = tbUserService.save(userEntity);
+                if (save) {
+                    return RStatic.ok("注册成功");
+                }else {
+                    return RStatic.error("注册失败");
+                }
             }else {
-                return RStatic.error("注册失败");
+                return RStatic.error("账号已存在");
             }
         }catch (Exception e) {
             return RStatic.error(e.getMessage());
