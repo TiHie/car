@@ -23,13 +23,27 @@ public interface TbCarMapper extends BaseMapper<TbCarEntity> {
      */
     public List<SpeedVO> getMoreDayCars(@Param("speedDTO") SpeedDTO speedDTO);
 
-
     /**
-     * 多天测速数据
+     * 单天测速数据
      * @param speedDTO
      * @return
      */
     public List<SpeedVO> getOneDayCars(@Param("speedDTO") SpeedDTO speedDTO);
+
+    /**
+     * 导出多天
+     * @param speedDTO
+     * @return
+     */
+    public List<SpeedVO> exportMoreDays(@Param("speedDTO") SpeedDTO speedDTO);
+
+    /**
+     * 导出单天
+     * @param speedDTO
+     * @return
+     */
+    public List<SpeedVO> exportOneDay(@Param("speedDTO") SpeedDTO speedDTO);
+
 
 
 
