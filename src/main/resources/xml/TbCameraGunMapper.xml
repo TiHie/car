@@ -2,4 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.car.mapper.TbCameraGunMapper">
 
+    <select id="getSpeed" resultType="com.car.entity.bean.OneSpeed">
+        SELECT tcg.id,tc.speed
+        FROM tb_channel tc,tb_camera_gun tcg
+        WHERE tcg.channel_id=tc.id
+    </select>
+
+    <select id="getCameraGunVo" resultType="com.car.entity.vo.CameraGunVo">
+        SELECT camera.id AS id, channel.`name` AS channel_name, camera.`name` AS `name`,camera.note AS note,rule,split_str,file_dir,auto_scan,location
+        FROM tb_camera_gun AS camera JOIN tb_channel AS channel  ON camera.channel_id = channel.id
+        WHERE camera.is_deleted = 0
+        <if test="parameter != null">
+            AND (camera.`name` LIKE concat('%',#{parameter},'%') OR location LIKE concat('%',#{parameter},'%') OR channel.`name` LIKE concat('%',#{parameter},'%'))
+        </if>
+        LIMIT #{startInteger},#{items}
+    </select>
+
+    <select id="getCameraGunCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM tb_camera_gun AS camera JOIN tb_channel AS channel  ON camera.channel_id = channel.id
+        WHERE  camera.is_deleted = 0
+        <if test="parameter != null">
+            AND (camera.`name` LIKE concat('%',#{parameter},'%') OR location LIKE concat('%',#{parameter},'%') OR channel.`name` LIKE concat('%',#{parameter},'%'))
+        </if>
+    </select>
+
 </mapper>

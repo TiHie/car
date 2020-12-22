@@ -1,6 +1,7 @@
 package com.car.util;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 
 /**
  * @author wjz
@@ -20,4 +21,5 @@ public class WirePropertyToObjUtil {
         //返回该对象
         return obj;
     }
+
 }

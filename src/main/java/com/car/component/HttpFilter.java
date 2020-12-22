@@ -1,0 +1,29 @@
+package com.car.component;
+
+import com.car.util.NetWorkUtil;
+import com.car.util.TokenUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@Slf4j
+@Component
+public class HttpFilter implements HandlerInterceptor {
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String token = request.getHeader("token");
+        String userId = request.getHeader("userId");
+        String ip = NetWorkUtil.getIpAddress(request);
+        System.out.println(ip);
+        if (TokenUtil.checkToken(token,userId,ip)) {
+            log.info("ip:"+ip+"请求了"+request.getServletPath()+"接口，请求成功");
+            return true;
+        }
+        log.error("ip:"+ip+"请求了"+request.getServletPath()+"接口，请求失败");
+        return false;
+    }
+}

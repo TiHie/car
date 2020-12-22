@@ -39,7 +39,6 @@ public class MatchWJZServiceImpl implements MatchService {
     @SneakyThrows
     @Override
     public TbCarEntity match(String fileName,String regStr,List<String> regGroup2EntityField) {
-        System.out.println("进入match方法");
         DateFormat timeFormat = new SimpleDateFormat("yyyyMMddHHmmss");
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         TbCarEntity tbCarEntity = new TbCarEntity();

@@ -7,7 +7,7 @@ public class LinuxApiUtil {
     //tree 列出指定目录文件并过滤结果
     public static String treeDir(String cmd,String... grepParams){
         for (String param : grepParams) {
-            cmd+=" grep "+param;
+            cmd+=" | grep "+param;
         }
         List<String> cmds = new ArrayList<String>();
         cmds.add("bash");

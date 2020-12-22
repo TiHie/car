@@ -12,4 +12,5 @@ import lombok.ToString;
 public class OneImg {
     private String type;
     private String name;
+    private String fileName;
 }
