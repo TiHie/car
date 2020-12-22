@@ -14,6 +14,9 @@ import com.car.service.TbChannelService;
 import com.car.util.DateUtil;
 import com.car.util.RStatic;
 import com.car.util.RuntimeDataUtil;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +43,8 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
      */
     @Override
     public RStatic channelAllData(SpeedDTO speedDTO) {
-//        try {
+        try {
+            speedDTO.setPage((speedDTO.getPage()-1)*speedDTO.getItems());
             TbChannelEntity channel = new TbChannelEntity();
             if (speedDTO.getChannelId() != null) {
                 QueryWrapper<TbChannelEntity> wrapper = new QueryWrapper<>();
@@ -63,22 +67,24 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
             }
 
 
-            List<SpeedVO> carPage = cameraGunListCars.stream().skip((speedDTO.getPage() - 1) * speedDTO.getItems()).limit(speedDTO.getItems()).collect(Collectors.toList());
+            //List<SpeedVO> carPage = cameraGunListCars.stream().skip((speedDTO.getPage() - 1) * speedDTO.getItems()).limit(speedDTO.getItems()).collect(Collectors.toList());
 
             if (speedDTO.getChannelId() != null) {
 
-                return RStatic.ok("查询成功").data("channelName", channel.getName()).data("carPage", carPage).data("dayRatio", stringIntegerMap).data("page", speedDTO.getPage()).data("items", speedDTO.getItems());
+                return RStatic.ok("查询成功").data("channelName", channel.getName()).data("carPage", cameraGunListCars).data("dayRatio", stringIntegerMap).data("page", speedDTO.getPage()).data("items", speedDTO.getItems());
             } else {
-                return RStatic.ok("查询成功").data("carPage", carPage).data("dayRatio", stringIntegerMap).data("page", speedDTO.getPage()).data("items", speedDTO.getItems());
+                return RStatic.ok("查询成功").data("carPage", cameraGunListCars).data("dayRatio", stringIntegerMap).data("page", speedDTO.getPage()).data("items", speedDTO.getItems());
             }
-//        } catch (Exception e) {
-//            System.out.println("错误原因：" + e.getMessage());
-//        }
-//        return RStatic.error("错误");
+        } catch (Exception e) {
+            System.out.println("错误原因：" + e.getMessage());
+        }
+        return RStatic.error("错误");
     }
 
     @Override
     public RStatic channelOneCarData(SpeedDTO speedDTO) {
+
+        speedDTO.setPage((speedDTO.getPage()-1)*speedDTO.getItems());
         Map<Integer, Map<String, Integer>> map = new HashMap<>();
 
         Date hour = new Date();
@@ -119,6 +125,29 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
         }
     }
 
+    @Override
+    public XSSFWorkbook export(SpeedDTO speedDTO) {
+
+        try {
+            List<SpeedVO> cameraGunListCars = new ArrayList<>();
+            List<SpeedVO> listCar = new ArrayList<>();
+            SpeedVO carVo = new SpeedVO();
+            Map<String, Integer> stringIntegerMap = new HashMap<>();
+
+            if (speedDTO.getEndTime() != null) {
+
+                cameraGunListCars = tbCarMapper.exportMoreDays(speedDTO);
+            } else {
+                cameraGunListCars = tbCarMapper.exportOneDay(speedDTO);
+            }
+            return exportCar(cameraGunListCars);
+        }catch (Exception e) {
+            System.out.println("错误原因："+e.getMessage());
+        }
+        return null;
+    }
+
+
     public static long getDaySub(String beginDateStr, String endDateStr) {
 
         long day = 0;
@@ -135,4 +164,38 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
         return day;
     }
 
+    public static XSSFWorkbook exportCar(List<SpeedVO> cars){
+        XSSFWorkbook wb = new XSSFWorkbook();
+        Sheet sheet = wb.createSheet("Cars");
+        Row titleRow = sheet.createRow(0);
+        titleRow.createCell(0).setCellValue("序号");
+        titleRow.createCell(1).setCellValue("通道名");
+        titleRow.createCell(2).setCellValue("拍摄日期");
+        titleRow.createCell(3).setCellValue("车牌");
+        titleRow.createCell(4).setCellValue("车牌颜色");
+        titleRow.createCell(5).setCellValue("状态");
+        titleRow.createCell(6).setCellValue("车速");
+        titleRow.createCell(7).setCellValue("限速");
+        titleRow.createCell(8).setCellValue("摄像枪类型");
+        titleRow.createCell(9).setCellValue("摄像枪地点");
+        titleRow.createCell(10).setCellValue("图片路径");
+        int cell = 1;
+        for (SpeedVO car : cars) {
+            Row row = sheet.createRow(cell);
+            row.createCell(0).setCellValue(cell);
+            row.createCell(1).setCellValue(car.getChannelName());
+            row.createCell(2).setCellValue(car.getShootingTime());
+            row.createCell(3).setCellValue(car.getLicensePlate());
+            row.createCell(4).setCellValue(car.getLicensePlateColor());
+            row.createCell(5).setCellValue(car.getStatus());
+            row.createCell(6).setCellValue(car.getCarSpeed());
+            row.createCell(7).setCellValue(car.getChannelSpeed());
+            row.createCell(8).setCellValue(car.getCameraGunName());
+            row.createCell(9).setCellValue(car.getCameraGunLocation());
+            row.createCell(10).setCellValue(car.getCarImage());
+            cell++;
+        }
+        return wb;
+
+    }
 }

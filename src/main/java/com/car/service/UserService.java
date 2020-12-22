@@ -2,6 +2,7 @@ package com.car.service;
 
 import com.car.entity.TbUserEntity;
 import com.car.util.RStatic;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -42,21 +43,22 @@ public interface UserService {
      */
     public RStatic selectUser(String limit,int page,int items);
 
+
     /**
-     * 用户登录
+     * 登录
      * @param userName
      * @param password
+     * @param request
      * @return
      */
     public RStatic login(String userName, String password, HttpServletRequest request);
+    public RStatic login(@RequestBody TbUserEntity tbUserEntity) throws Exception;
 
     /**
      * 管理员生成账号
-     * @param userName
-     * @param password
-     * @param avatar
-     * @param remark
+     * @param tbUserEntity
+
      * @return
      */
-    public RStatic register(String userName,String password,String avatar,String remark);
+    public RStatic register(@RequestBody TbUserEntity tbUserEntity) throws Exception;
 }

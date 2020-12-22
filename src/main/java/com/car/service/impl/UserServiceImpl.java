@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.car.entity.TbUserEntity;
+import com.car.entity.vo.UserVO;
 import com.car.service.TbUserService;
 import com.car.service.UserService;
 import com.car.util.*;
@@ -129,8 +130,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public RStatic login(String userName, String password, HttpServletRequest request) {
+        String pwd = null;
+        try {
+            pwd = Md5Util.MD5Hax(password);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         QueryWrapper<TbUserEntity> userWrapper = new QueryWrapper<>();
-        userWrapper.eq("username",userName).eq("password",password);
+        userWrapper.eq("username",userName).eq("password",pwd);
         TbUserEntity user = tbUserService.getOne(userWrapper);
         if (user == null) {
             return RStatic.error("账号或密码错误");
@@ -147,13 +154,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RStatic register(String userName, String password, String avatar, String remark) {
+    public RStatic login(TbUserEntity tbUserEntity) throws Exception {
+        return null;
+    }
+
+    @Override
+    public RStatic register(TbUserEntity tUser) throws Exception {
         TbUserEntity userEntity = new TbUserEntity();
-        userEntity.setUsername(userName);
-        userEntity.setPassword(password);
-        userEntity.setRemark(remark);
-        userEntity.setAvatar(avatar);
-        userEntity.setRole("操作员");
+        String pwd = Md5Util.MD5Hax(tUser.getPassword());
+        userEntity.setUsername(tUser.getUsername());
+        userEntity.setPassword(pwd);
+        userEntity.setRemark(tUser.getRemark());
+        userEntity.setAvatar(tUser.getAvatar());
+        userEntity.setRole(tUser.getRole());
         try {
             boolean save = tbUserService.save(userEntity);
             if (save) {

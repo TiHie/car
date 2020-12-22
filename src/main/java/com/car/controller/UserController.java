@@ -72,28 +72,25 @@ public class UserController {
 
     /**
      * 用户登录
-     * @param userName
-     * @param password
+     * @param tbUserEntity
      * @return
      */
     @ApiOperation("用户登录")
     @PostMapping("/api/v1/user/login")
-    public RStatic login(String userName, String password, HttpServletRequest request){
-        return userService.login(userName, password,request);
+
+    public RStatic login(@RequestBody TbUserEntity tbUserEntity ,HttpServletRequest request) throws Exception{
+        return userService.login(tbUserEntity.getUsername(),tbUserEntity.getPassword(),request);
     }
 
     /**
      * 管理员生成账号
-     * @param userName
-     * @param password
-     * @param avatar
-     * @param remark
+     * @param tbUserEntity
      * @return
      */
     @ApiOperation("管理员注册账号")
     @PostMapping("/api/v1/user/register")
-    public RStatic register(String userName, String password, String avatar, String remark) {
-        return userService.register(userName, password, avatar, remark);
+    public RStatic register(@RequestBody TbUserEntity tbUserEntity) throws Exception {
+        return userService.register(tbUserEntity);
     }
 
 }
