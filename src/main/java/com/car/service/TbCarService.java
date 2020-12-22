@@ -4,6 +4,7 @@ import com.car.entity.TbCarEntity;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.car.entity.dto.SpeedDTO;
 import com.car.util.RStatic;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public interface TbCarService extends IService<TbCarEntity> {
 
@@ -21,5 +22,10 @@ public interface TbCarService extends IService<TbCarEntity> {
      */
     public RStatic channelOneCarData(SpeedDTO speedDTO);
 
-
+    /**
+     * 导出历史查询
+     * @param speedDTO
+     * @return
+     */
+    public XSSFWorkbook export(SpeedDTO speedDTO);
 }

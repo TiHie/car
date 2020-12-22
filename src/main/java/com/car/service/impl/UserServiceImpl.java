@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.car.entity.TbUserEntity;
+import com.car.entity.vo.UserVO;
 import com.car.service.TbUserService;
 import com.car.service.UserService;
 import com.car.util.Md5Util;
@@ -127,26 +128,43 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RStatic login(String userName, String password) {
+    public RStatic login(TbUserEntity tbUserEntity) throws Exception {
+        UserVO userVO = new UserVO();
+        String pwd = Md5Util.MD5Hax(tbUserEntity.getPassword());
+        System.out.println("userName:"+tbUserEntity.getUsername());
+        System.out.println("pwd:"+pwd);
+
         QueryWrapper<TbUserEntity> userWrapper = new QueryWrapper<>();
-        userWrapper.eq("username",userName).eq("password",password);
+
+        userWrapper.eq("username",tbUserEntity.getUsername()).eq("password",pwd);
         TbUserEntity user = tbUserService.getOne(userWrapper);
         if (user == null) {
             return RStatic.error("账号或密码错误");
         }else {
+            System.out.println(user.toString());
+            userVO.setId(user.getId());
+            userVO.setUsername(user.getUsername());
+            userVO.setAvatar(user.getAvatar());
+            userVO.setCreateBy(user.getCreateBy());
+            userVO.setCreateTime(user.getCreateTime());
+            userVO.setDeleted(user.isDeleted());
+            userVO.setRemark(user.getRemark());
+            userVO.setRole(user.getRole());
+
             RuntimeDataUtil.roleMap.put(user.getUsername(),user.getRole());
-            return RStatic.ok("登录成功").data("user",user);
+            return RStatic.ok("登录成功").data("user",userVO);
         }
     }
 
     @Override
-    public RStatic register(String userName, String password, String avatar, String remark) {
+    public RStatic register(TbUserEntity tUser) throws Exception {
         TbUserEntity userEntity = new TbUserEntity();
-        userEntity.setUsername(userName);
-        userEntity.setPassword(password);
-        userEntity.setRemark(remark);
-        userEntity.setAvatar(avatar);
-        userEntity.setRole("操作员");
+        String pwd = Md5Util.MD5Hax(tUser.getPassword());
+        userEntity.setUsername(tUser.getUsername());
+        userEntity.setPassword(pwd);
+        userEntity.setRemark(tUser.getRemark());
+        userEntity.setAvatar(tUser.getAvatar());
+        userEntity.setRole(tUser.getRole());
         try {
             boolean save = tbUserService.save(userEntity);
             if (save) {
