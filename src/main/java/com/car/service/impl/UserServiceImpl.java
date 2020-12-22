@@ -6,12 +6,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.car.entity.TbUserEntity;
 import com.car.service.TbUserService;
 import com.car.service.UserService;
-import com.car.util.Md5Util;
-import com.car.util.RStatic;
-import com.car.util.RuntimeDataUtil;
+import com.car.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -127,7 +128,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RStatic login(String userName, String password) {
+    public RStatic login(String userName, String password, HttpServletRequest request) {
         QueryWrapper<TbUserEntity> userWrapper = new QueryWrapper<>();
         userWrapper.eq("username",userName).eq("password",password);
         TbUserEntity user = tbUserService.getOne(userWrapper);
@@ -135,7 +136,13 @@ public class UserServiceImpl implements UserService {
             return RStatic.error("账号或密码错误");
         }else {
             RuntimeDataUtil.roleMap.put(user.getUsername(),user.getRole());
-            return RStatic.ok("登录成功").data("user",user);
+            Map<String,Object> map = new HashMap<>();
+            String ip = NetWorkUtil.getIpAddress(request);
+            map.put("username",userName);
+            String token = TokenUtil.encode(user.getId()+"", map, ip);
+            return RStatic.ok("登录成功")
+                    .data("user",user)
+                    .data("token",token);
         }
     }
 

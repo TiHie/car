@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * @author 王进之
@@ -14,6 +15,23 @@ import java.util.regex.Pattern;
  **/
 @Slf4j
 public class FileUtil {
+
+    public static void main(String[] args) {
+        getAllDir("/home/lxl").forEach(System.out::println);
+    }
+
+    //获取文件夹下的文件夹
+    public static List<String> getAllDir(String path){
+        File file = new File(path);
+        if (file.exists()){
+            File[] files = file.listFiles((f, n) -> {
+                return f.isDirectory();
+            });
+            List<String> list = Arrays.stream(files).map(e->e.getName()+"/").collect(Collectors.toList());
+            return list;
+        }
+        return null;
+    }
 
     public static void getAllFile(File file,List<OneImg> list){
         for (File listFile : file.listFiles()) {
@@ -64,12 +82,5 @@ public class FileUtil {
             }
         }
         return true;
-    }
-
-    public static void main(String[] args) {
-        String fileName = "20201022150539_蓝_浙B999AA_卡口车速2_alreadyScan.jpg";
-        boolean match = matchStr(fileName,
-                Arrays.asList("plate","alreadyScan"));
-        System.out.println(match);
     }
 }

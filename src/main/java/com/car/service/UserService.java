@@ -3,6 +3,7 @@ package com.car.service;
 import com.car.entity.TbUserEntity;
 import com.car.util.RStatic;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -47,7 +48,7 @@ public interface UserService {
      * @param password
      * @return
      */
-    public RStatic login(String userName,String password);
+    public RStatic login(String userName, String password, HttpServletRequest request);
 
     /**
      * 管理员生成账号

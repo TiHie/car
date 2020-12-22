@@ -7,6 +7,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -76,8 +78,8 @@ public class UserController {
      */
     @ApiOperation("用户登录")
     @PostMapping("/api/v1/user/login")
-    public RStatic login(String userName, String password){
-        return userService.login(userName, password);
+    public RStatic login(String userName, String password, HttpServletRequest request){
+        return userService.login(userName, password,request);
     }
 
     /**
