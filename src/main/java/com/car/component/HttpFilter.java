@@ -18,9 +18,9 @@ public class HttpFilter implements HandlerInterceptor {
         String token = request.getHeader("token");
         String userId = request.getHeader("userId");
         String ip = NetWorkUtil.getIpAddress(request);
-        System.out.println(ip);
-        if (TokenUtil.checkToken(token,userId,ip)) {
-            log.info("ip:"+ip+"请求了"+request.getServletPath()+"接口，请求成功");
+        String role = TokenUtil.checkToken(token, userId, ip, "role");
+        if (null != role) {
+            log.info("ip:"+ip+"请求了"+request.getServletPath()+"接口，请求成功，角色："+role);
             return true;
         }
         log.error("ip:"+ip+"请求了"+request.getServletPath()+"接口，请求失败");

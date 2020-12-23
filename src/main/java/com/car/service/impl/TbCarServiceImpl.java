@@ -139,6 +139,27 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
 //        }
 //        return null;
 //    }
+    @Override
+    public RStatic export(SpeedDTO speedDTO) {
+
+        try {
+            List<SpeedVO> cameraGunListCars = new ArrayList<>();
+            List<SpeedVO> listCar = new ArrayList<>();
+            SpeedVO carVo = new SpeedVO();
+            Map<String, Integer> stringIntegerMap = new HashMap<>();
+
+            if (speedDTO.getEndTime() != null) {
+
+                cameraGunListCars = tbCarMapper.exportMoreDays(speedDTO);
+            } else {
+                cameraGunListCars = tbCarMapper.exportOneDay(speedDTO);
+            }
+            return RStatic.ok("查询成功").data("cars",cameraGunListCars);
+        }catch (Exception e) {
+
+            return RStatic.error("错误原因："+e.getMessage());
+        }
+    }
 
 
     public static long getDaySub(String beginDateStr, String endDateStr) {

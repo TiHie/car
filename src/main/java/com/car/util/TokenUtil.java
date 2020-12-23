@@ -39,6 +39,7 @@ public class TokenUtil {
         return claims;
     }
 
+    //检查 token 是否过期
     public static boolean checkToken(String token, String key, String salt){
         try {
             Map<String, Object> decode = decode(token, key, salt);
@@ -47,6 +48,22 @@ public class TokenUtil {
             return check;
         }catch (Exception e){
             return false;
+        }
+    }
+
+    //检查 token 并看有没有属性值，拿到属性值并返回属性值
+    public static String checkToken(String token, String key, String salt,String param){
+        try {
+            Map<String, Object> decode = decode(token, key, salt);
+            String expTime = decode.get("exp").toString();
+            boolean check = Long.valueOf(expTime) > System.currentTimeMillis()/1000;
+            if (check){
+                return decode.get(param).toString();
+            }else {
+                return null;
+            }
+        }catch (Exception e){
+            return null;
         }
     }
 }
