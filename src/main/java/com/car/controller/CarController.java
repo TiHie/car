@@ -81,4 +81,10 @@ public class CarController {
         return tbCarService.channelOneCarData(speedDTO);
     }
 
+    @ApiOperation("导出历史查询")
+    @GetMapping("/api/user/exportCars")
+    public RStatic export(SpeedDTO speedDTO) {
+        return tbCarService.export(speedDTO);
+    }
+
 }

@@ -8,6 +8,7 @@ import com.car.util.DateUtil;
 import com.car.util.RuntimeDataUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @SpringBootApplication
+@ServletComponentScan(basePackages = {"com.car.filter"})
 public class CarMain {
 
     public static void main(String[] args) {
@@ -49,8 +51,8 @@ public class CarMain {
             //假定不是 windows 就是 linux
             RuntimeDataUtil.environment = "linux";
             RuntimeDataUtil.connectStr = "/";
-            System.out.println("linux");
         }
+
 
         ScheduledExecutorService scheduledExecutorService = run.getBean(ScheduledExecutorService.class);
         //定时周期任务，每天 0 点执行，更新扫描的文件夹
@@ -67,7 +69,6 @@ public class CarMain {
         scheduledExecutorService.scheduleWithFixedDelay(()->{
             scanService.scanAndUpload(false);
         },0,1, TimeUnit.MINUTES);
-
 
     }
 }

@@ -6,11 +6,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.car.entity.TbUserEntity;
 import com.car.service.TbUserService;
 import com.car.service.UserService;
-import com.car.util.Md5Util;
-import com.car.util.RStatic;
+import com.car.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -127,6 +129,70 @@ public class UserServiceImpl implements UserService {
             }
         }catch (Exception e){
             return RStatic.error("操作有误");
+        }
+    }
+
+    @Override
+    public RStatic login(String userName, String password, HttpServletRequest request) {
+        String pwd = null;
+        try {
+            pwd = Md5Util.MD5Hax(password);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        QueryWrapper<TbUserEntity> userWrapper = new QueryWrapper<>();
+        userWrapper.eq("username",userName).eq("password",pwd);
+        TbUserEntity user = tbUserService.getOne(userWrapper);
+        if (user == null) {
+            return RStatic.error("账号或密码错误");
+        }else {
+            RuntimeDataUtil.roleMap.put(user.getUsername(),user.getRole());
+            Map<String,Object> map = new HashMap<>();
+            String ip = NetWorkUtil.getIpAddress(request);
+            map.put("username",userName);
+            map.put("role",user.getRole());
+            String token = TokenUtil.encode(user.getId()+"", map, ip);
+            return RStatic.ok("登录成功")
+                    .data("user",user)
+                    .data("token",token);
+        }
+    }
+
+    @Override
+    public RStatic login(TbUserEntity tbUserEntity) throws Exception {
+        return null;
+    }
+
+    @Override
+    public RStatic login(Map<String, Object> map) throws Exception {
+        return null;
+    }
+
+    @Override
+    public RStatic register(TbUserEntity tUser) throws Exception {
+        TbUserEntity userEntity = new TbUserEntity();
+        String pwd = Md5Util.MD5Hax(tUser.getPassword());
+        userEntity.setUsername(tUser.getUsername());
+        userEntity.setPassword(pwd);
+        userEntity.setRemark(tUser.getRemark());
+        userEntity.setAvatar(tUser.getAvatar());
+        userEntity.setRole(tUser.getRole());
+        try {
+            QueryWrapper<TbUserEntity> userWrapper = new QueryWrapper<>();
+            userWrapper.eq("username",tUser.getUsername());
+            TbUserEntity one = tbUserService.getOne(userWrapper);
+            if (one == null) {
+                boolean save = tbUserService.save(userEntity);
+                if (save) {
+                    return RStatic.ok("注册成功");
+                }else {
+                    return RStatic.error("注册失败");
+                }
+            }else {
+                return RStatic.error("账号已存在");
+            }
+        }catch (Exception e) {
+            return RStatic.error(e.getMessage());
         }
     }
 }

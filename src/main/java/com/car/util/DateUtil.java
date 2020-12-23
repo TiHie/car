@@ -41,6 +41,14 @@ public class DateUtil {
         return result;
     }
 
+    public static Date getTodayDate() throws ParseException {
+        String todayStr = getTodayStr();
+        String format = "yyyy年MM月dd日";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+        Date parse = simpleDateFormat.parse(todayStr);
+        return parse;
+    }
+
     //根据特定格式获取日期处理结果()
     public static String getFormatResult(String format){
         Date date = new Date();

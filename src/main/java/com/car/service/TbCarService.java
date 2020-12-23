@@ -21,5 +21,10 @@ public interface TbCarService extends IService<TbCarEntity> {
      */
     public RStatic channelOneCarData(SpeedDTO speedDTO);
 
-
+    /**
+     * 导出历史查询
+     * @param speedDTO
+     * @return
+     */
+    public RStatic export(SpeedDTO speedDTO);
 }

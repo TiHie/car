@@ -7,6 +7,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -64,5 +66,27 @@ public class UserController {
     @GetMapping("/api/v1/user")
     public RStatic selectUser(String parameter,int page,int items){
         return userService.selectUser(parameter, page, items);
+    }
+
+    /**
+     * 用户登录
+     * @param map
+     * @return
+     */
+    @ApiOperation("用户登录")
+    @PostMapping("/api/v1/user/login")
+    public RStatic login(@RequestBody Map<String, Object> map,HttpServletRequest request) throws Exception{
+        return userService.login((String) map.get("username"),(String) map.get("password"),request);
+    }
+
+    /**
+     * 管理员生成账号
+     * @param tbUserEntity
+     * @return
+     */
+    @ApiOperation("管理员注册账号")
+    @PostMapping("/api/v1/user/register")
+    public RStatic register(@RequestBody TbUserEntity tbUserEntity) throws Exception {
+        return userService.register(tbUserEntity);
     }
 }

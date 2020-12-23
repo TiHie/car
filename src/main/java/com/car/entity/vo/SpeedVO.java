@@ -24,6 +24,7 @@ public class SpeedVO {
     private Date shootingTime;
     private String licensePlate;
     private String licensePlateColor;
+    private String carImage;
     private Integer status;
     private Integer carSpeed;
     private Integer channelSpeed;
