@@ -15,7 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class HomePageVo {
 
-    private Integer id;
+    private Integer channelId;
     private String name;
     private String image;
 }

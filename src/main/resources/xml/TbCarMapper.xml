@@ -67,7 +67,7 @@
         <if test="speedDTO.speed != null and speedDTO.speed != '' ">
             and tb_car.speed >= #{speedDTO.speed}
         </if>
-        order by hour_time desc limit #{speedDTO.page},#{speedDTO.items}
+        order by hour_time desc limit 1
     </select>
 
     <select id="moreDayRatio" resultType="java.util.Map" parameterType="com.car.entity.dto.SpeedDTO">
