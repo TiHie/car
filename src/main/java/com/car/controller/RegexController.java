@@ -34,7 +34,7 @@ public class RegexController {
                 put("车牌名称","([\\u4e00-\\u9fa5]{1}[A-Z]{1}[A-Z_0-9]{5})");
                 put("通道名称车速","([\\u4e00-\\u9fa5]{2,}\\d{1,3})");
                 put("通道名称","([\\u4e00-\\u9fa5]{2,})");
-                put("车速","\\d{1,3})");
+                put("车速","(\\d{1,3})");
             }
         };
     }
@@ -55,7 +55,7 @@ public class RegexController {
         System.out.println(finalRegStr);
         System.out.println(regGroup2EntityField.toString());
 
-        // TODO: 2020/12/15 wjz文件名解析器入口：第一个参数是要解析的文件名（动态传入），针对同一个通道的文件，后两个参数只需要构造一次；这里的时间是2020年12月1日，日期解析出来是11月 
+        // TODO: 2020/12/15 wjz文件名解析器入口：第一个参数是要解析的文件名（动态传入），针对同一个通道的文件，后两个参数只需要构造一次；这里的时间是2020年12月1日，日期解析出来是11月
         TbCarEntity match = matchWJZServiceImpl.match("20201201010203_蓝_粤B00352_卡口车速65.jpg", finalRegStr, regGroup2EntityField);
         if(match == null){
             System.out.println("match is null");

@@ -85,3 +85,4 @@ class TemplateTests {
         System.out.println("=="+cameraGunVoList.toString());
     }
 }
+
