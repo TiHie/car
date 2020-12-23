@@ -14,7 +14,6 @@ public class HttpFilterConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new HttpFilter())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/**")
                 .excludePathPatterns("/api/v1/user/login")
                 .excludePathPatterns("/api/admin/login")
                 .excludePathPatterns("/api/user/login")
