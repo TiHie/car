@@ -49,16 +49,20 @@ public interface UserService {
      * @param userName
      * @param password
      * @param request
+     * 用户登录
+     * @param map
      * @return
+     * @throws  Exception
      */
     public RStatic login(String userName, String password, HttpServletRequest request);
     public RStatic login(@RequestBody TbUserEntity tbUserEntity) throws Exception;
+    public RStatic login(@RequestBody Map<String, Object> map) throws Exception;
 
     /**
      * 管理员生成账号
      * @param tbUserEntity
-
      * @return
+     * @throws Exception
      */
     public RStatic register(@RequestBody TbUserEntity tbUserEntity) throws Exception;
 }

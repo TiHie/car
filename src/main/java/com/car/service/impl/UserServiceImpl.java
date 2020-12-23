@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.car.entity.TbUserEntity;
-import com.car.entity.vo.UserVO;
 import com.car.service.TbUserService;
 import com.car.service.UserService;
 import com.car.util.*;
@@ -146,6 +145,7 @@ public class UserServiceImpl implements UserService {
             Map<String,Object> map = new HashMap<>();
             String ip = NetWorkUtil.getIpAddress(request);
             map.put("username",userName);
+            map.put("role",user.getRole());
             String token = TokenUtil.encode(user.getId()+"", map, ip);
             return RStatic.ok("登录成功")
                     .data("user",user)
@@ -159,6 +159,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public RStatic login(Map<String, Object> map) throws Exception {
+        return null;
+    }
+
+    @Override
     public RStatic register(TbUserEntity tUser) throws Exception {
         TbUserEntity userEntity = new TbUserEntity();
         String pwd = Md5Util.MD5Hax(tUser.getPassword());
@@ -168,11 +173,18 @@ public class UserServiceImpl implements UserService {
         userEntity.setAvatar(tUser.getAvatar());
         userEntity.setRole(tUser.getRole());
         try {
-            boolean save = tbUserService.save(userEntity);
-            if (save) {
-                return RStatic.ok("注册成功");
+            QueryWrapper<TbUserEntity> userWrapper = new QueryWrapper<>();
+            userWrapper.eq("username",tUser.getUsername());
+            TbUserEntity one = tbUserService.getOne(userWrapper);
+            if (one == null) {
+                boolean save = tbUserService.save(userEntity);
+                if (save) {
+                    return RStatic.ok("注册成功");
+                }else {
+                    return RStatic.error("注册失败");
+                }
             }else {
-                return RStatic.error("注册失败");
+                return RStatic.error("账号已存在");
             }
         }catch (Exception e) {
             return RStatic.error(e.getMessage());

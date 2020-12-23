@@ -21,8 +21,6 @@ public class TbLogServiceImpl extends ServiceImpl<TbLogMapper, TbLogEntity> impl
     private TbLogMapper tbLogMapper;
     @Override
     public RStatic getLog(Integer page, Integer items) {
-        //IPage<TbLogEntity> LogPage = tbLogService.page(new Page<>(page, items), null);
-
         List<TbLogEntity> logPage = tbLogService.list().stream().skip((page- 1) * items).limit(items).collect(Collectors.toList());
 
         return RStatic.ok("查询成功").data("logPage", logPage).data("page",page).data("items",items);
@@ -39,10 +37,9 @@ public class TbLogServiceImpl extends ServiceImpl<TbLogMapper, TbLogEntity> impl
 
     @Override
     public RStatic likeSearchLog(LogDTO logDTO) {
+        logDTO.setPage((logDTO.getPage()-1)*logDTO.getItems());
         List<TbLogEntity> logList = tbLogMapper.likeSearchLog(logDTO);
-        List<TbLogEntity> logPage = logList.stream().skip((logDTO.getPage() - 1) * logDTO.getItems()).limit(logDTO.getItems()).collect(Collectors.toList());
-
-        return RStatic.ok("查询成功").data("logPage", logPage);
+        return RStatic.ok("查询成功").data("logPage", logList);
     }
 
 }
