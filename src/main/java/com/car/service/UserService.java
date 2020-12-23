@@ -2,7 +2,6 @@ package com.car.service;
 
 import com.car.entity.TbUserEntity;
 import com.car.util.RStatic;
-
 import java.util.Map;
 
 /**
@@ -30,7 +29,7 @@ public interface UserService {
      * @param tbUserEntity
      * @return
      */
-    public RStatic updateUser(TbUserEntity tbUserEntity);
+    public RStatic updateUser(TbUserEntity tbUserEntity) throws Exception;
 
     /***
      * 用户管理接口-查询

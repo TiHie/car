@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public RStatic addUser(TbUserEntity tbUserEntity){
+
         String username = tbUserEntity.getUsername();
         try {
             QueryWrapper<TbUserEntity> userCheckQw = new QueryWrapper<>();
@@ -79,12 +80,16 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public RStatic updateUser(TbUserEntity tbUserEntity) {
+    public RStatic updateUser(TbUserEntity tbUserEntity) throws Exception {
+
         String username = tbUserEntity.getUsername();
         QueryWrapper<TbUserEntity> userCheckQw = new QueryWrapper<>();
         userCheckQw.eq("username",username);
         TbUserEntity userCheck = tbUserService.getOne(userCheckQw);
         if (userCheck == null || userCheck.getUsername().equals(username)){
+            String password = tbUserEntity.getPassword();
+            String Md5Password = Md5Util.MD5Hax(password);
+            tbUserEntity.setPassword(Md5Password);
             boolean saveOrUpdate = tbUserService.saveOrUpdate(tbUserEntity);
             if (saveOrUpdate){
                 return RStatic.ok("修改成功");

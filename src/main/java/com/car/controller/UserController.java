@@ -49,7 +49,7 @@ public class UserController {
      */
     @ApiOperation("用户管理接口-修改")
     @PutMapping("/api/v1/user")
-    public RStatic updateUser(@RequestBody TbUserEntity tbUserEntity){
+    public RStatic updateUser(@RequestBody TbUserEntity tbUserEntity) throws Exception {
         return userService.updateUser(tbUserEntity);
     }
 
