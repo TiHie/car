@@ -110,7 +110,14 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
         }
 
         List<SpeedVO> cameraGunListCars = tbCarMapper.getOneDayCars(speedDTO);
-        SpeedVO car = cameraGunListCars.get(0);
+        System.out.println("=="+cameraGunListCars.size());
+        SpeedVO car = new SpeedVO();
+        if(cameraGunListCars.size() > 0)
+        {
+            car = cameraGunListCars.get(0);
+        }else {
+            car = null;
+        }
 
         if (speedDTO.getStartTime() != null && speedDTO.getChannelId() != null) {
             Map<String, Integer> stringIntegerMap = tbCarMapper.oneDayRatio(speedDTO);
