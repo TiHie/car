@@ -13,10 +13,15 @@ import com.car.mapper.TbCameraGunMapper;
 import com.car.service.TbCameraGunService;
 import com.car.service.TbCarService;
 import com.car.service.TbChannelService;
+import org.apache.commons.lang3.CharSet;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import static java.util.stream.Collectors.toList;
@@ -83,6 +88,13 @@ class TemplateTests {
 
         List<CameraGunVo> cameraGunVoList = tbCameraGunMapper.getCameraGunVo(parameter,page,items);
         System.out.println("=="+cameraGunVoList.toString());
+    }
+
+    @Value("${test.test.str}")
+    private String mm;
+    @Test
+    void tSter(){
+        System.out.println(mm);
     }
 }
 
