@@ -46,7 +46,7 @@ public class FileUtil {
     //文件路径，结果列表，匹配文件夹名称的表达式，匹配文件的表达式
     public static void getAllMatchFile(File file,List<OneImg> list,List<String> matchDir,List<String> matchFile){
         if (!file.exists()){
-            log.error(file.getName()+":不存在");
+            log.info(file.getName()+":不存在");
             return;
         }
         if (! file.isDirectory()){

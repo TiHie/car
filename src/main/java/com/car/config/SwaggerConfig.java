@@ -42,7 +42,8 @@ public class SwaggerConfig {
     private List<SecurityContext> securityContexts() {
         List<SecurityContext> securityContextList = new ArrayList<>();
         List<SecurityReference> securityReferenceList = new ArrayList<>();
-        securityReferenceList.add(new SecurityReference("custom-token", scopes()));
+        securityReferenceList.add(new SecurityReference("custom-token1", scopes()));
+        securityReferenceList.add(new SecurityReference("custom-token2", scopes()));
         securityContextList.add(SecurityContext
                 .builder()
                 .securityReferences(securityReferenceList)
@@ -58,8 +59,8 @@ public class SwaggerConfig {
 
     private List<ApiKey> securitySchemes() {
         List<ApiKey> apiKeyList = new ArrayList<>();
-        apiKeyList.add(new ApiKey("custom-token", "token", "header"));
-        apiKeyList.add(new ApiKey("custom-token","userid","header"));
+        apiKeyList.add(new ApiKey("custom-token1", "token", "header"));
+        apiKeyList.add(new ApiKey("custom-token2","userid","header"));
         return apiKeyList;
     }
 }

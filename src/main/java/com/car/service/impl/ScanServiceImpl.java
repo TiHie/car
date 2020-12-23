@@ -50,7 +50,7 @@ public class ScanServiceImpl implements ScanService {
         RuntimeDataUtil.cameraGunEntityMap.forEach((k,v)->{
             List<OneImg> oneImgs = uploadAll(k, scanAll, v);
 
-            log.error("自动扫描报告 = 包括"+oneImgs.size()+"个文件上传失败");
+            log.info("自动扫描报告 = 包括"+oneImgs.size()+"个文件上传失败");
         });
     }
 
