@@ -81,7 +81,7 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
     @Override
     public RStatic channelOneCarData(SpeedDTO speedDTO) {
 
-        speedDTO.setPage((speedDTO.getPage()-1)*speedDTO.getItems());
+        //speedDTO.setPage((speedDTO.getPage()-1)*speedDTO.getItems());
         Map<Integer, Map<String, Integer>> map = new HashMap<>();
 
         Date hour = new Date();
