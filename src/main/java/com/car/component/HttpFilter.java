@@ -1,5 +1,6 @@
 package com.car.component;
 
+import com.car.exception.BizException;
 import com.car.util.NetWorkUtil;
 import com.car.util.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ public class HttpFilter implements HandlerInterceptor {
             return true;
         }
         log.error("ip:"+ip+"请求了"+request.getServletPath()+"接口，请求失败");
-        return false;
+        throw new BizException(50001,"token失效，请重试");
+
     }
 }
