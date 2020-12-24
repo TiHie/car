@@ -6,6 +6,7 @@ import com.car.entity.TbCarEntity;
 import com.car.entity.bean.OneImg;
 import com.car.exception.BizException;
 import com.car.service.ScanService;
+import com.car.service.TbCameraGunService;
 import com.car.service.TbCarService;
 import com.car.util.FileUtil;
 import com.car.util.LinuxApiUtil;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,6 +43,8 @@ public class ScanServiceImpl implements ScanService {
     private TbCarService tbCarService;
     @Autowired
     private MatchLXLServiceImpl matchLXLService;
+    @Autowired
+    private TbCameraGunService tbCameraGunService;
 
     /**
      * 扫描所有的未操作过的文件
@@ -51,7 +56,12 @@ public class ScanServiceImpl implements ScanService {
         RuntimeDataUtil.cameraGunEntityMap.forEach((k,v)->{
             List<OneImg> oneImgs = uploadAll(k, scanAll, v);
 
-            log.info("自动扫描报告 = 包括"+oneImgs.size()+"个文件上传失败");
+            if(oneImgs.size() != 0){
+                log.warn("自动扫描文件失败，失败文件个数：{},文件名：{}",oneImgs.size(),oneImgs);
+                new BizException("自动扫描文件失败，失败个数"+oneImgs.size()+";通道值："+k);
+            }else {
+                log.info("自动扫描文件正常");
+            }
         });
     }
 
@@ -160,6 +170,17 @@ public class ScanServiceImpl implements ScanService {
         }
         tbCarService.saveBatch(result);
         return error;
+    }
+
+    @Override
+    public boolean checkLegitimacy(String substring, Integer gunId) {
+        TbCameraGunEntity gunById = tbCameraGunService.getById(gunId);
+        TbCarEntity match = matchLXLService.match(substring, gunId);
+        boolean isMatches = true;
+        if(StringUtils.isEmpty(match.getShootingTime())  || StringUtils.isEmpty(match.getLicensePlate()) || StringUtils.isEmpty(match.getSpeed()) || StringUtils.isEmpty(match.getChannelName() == null)){
+            isMatches = false;
+        }
+        return isMatches;
     }
 
 }
