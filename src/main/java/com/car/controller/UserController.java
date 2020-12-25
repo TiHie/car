@@ -1,6 +1,7 @@
 package com.car.controller;
 
 import com.car.entity.TbUserEntity;
+import com.car.entity.dto.LoginDto;
 import com.car.service.UserService;
 import com.car.util.RStatic;
 import io.swagger.annotations.Api;
@@ -70,13 +71,13 @@ public class UserController {
 
     /**
      * 用户登录
-     * @param map
+     * @param
      * @return
      */
     @ApiOperation("用户登录")
     @PostMapping("/api/v1/user/login")
-    public RStatic login(@RequestBody Map<String, Object> map,HttpServletRequest request) throws Exception{
-        return userService.login((String) map.get("username"),(String) map.get("password"),request);
+    public RStatic login(@RequestBody LoginDto loginDto, HttpServletRequest request) throws Exception{
+        return userService.login(loginDto.getUsername(),loginDto.getPassword(),request);
     }
 
     /**

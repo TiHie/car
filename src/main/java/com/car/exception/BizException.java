@@ -18,14 +18,16 @@ public class BizException extends RuntimeException{
     protected String msg;
 
     public BizException(){
-        super();
+        super("未知业务异常");
     }
 
     public BizException(String msg){
+        super(msg);
         this.msg = msg;
     }
 
     public BizException(Integer errCode, String msg){
+        super(msg);
         this.errCode = errCode;
         this.msg = msg;
     }
