@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 public class HttpFilter implements HandlerInterceptor {
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws BizException {
         String token = request.getHeader("token");
         String userId = request.getHeader("userId");
         String ip = NetWorkUtil.getIpAddress(request);
@@ -24,8 +24,7 @@ public class HttpFilter implements HandlerInterceptor {
             log.info("ip:"+ip+"请求了"+request.getServletPath()+"接口，请求成功，角色："+role);
             return true;
         }
-        log.error("ip:"+ip+"请求了"+request.getServletPath()+"接口，请求失败");
+        log.warn("ip:"+ip+"请求了"+request.getServletPath()+"接口，请求失败，token信息过期");
         throw new BizException(50001,"token失效，请重试");
-
     }
 }
