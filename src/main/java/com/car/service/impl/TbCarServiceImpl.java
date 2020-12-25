@@ -37,12 +37,10 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
     @Override
     public RStatic channelAllData(SpeedDTO speedDTO) {
         try {
-            speedDTO.setPage((speedDTO.getPage()-1)*speedDTO.getItems());
-            TbChannelEntity channel = new TbChannelEntity();
-            if (speedDTO.getChannelId() != null) {
-                QueryWrapper<TbChannelEntity> wrapper = new QueryWrapper<>();
-                wrapper.eq("id", speedDTO.getChannelId());
-                channel = tbChannelService.getOne(wrapper);
+            if (speedDTO.getPage()!=null && speedDTO.getPage()!=null)
+            {
+                speedDTO.setPage((speedDTO.getPage()-1)*speedDTO.getItems());
+
             }
             List<SpeedVO> cameraGunListCars = new ArrayList<>();
             List<SpeedVO> listCar = new ArrayList<>();
@@ -50,24 +48,25 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
             Map<String, Integer> stringIntegerMap = new HashMap<>();
 
 
-            if (speedDTO.getEndTime() != null) {
+            if ((speedDTO.getStartTime()!=null && speedDTO.getEndTime() != null)||(speedDTO.getStartTime()==null && speedDTO.getEndTime() == null)) {
 
                 cameraGunListCars = tbCarMapper.getMoreDayCars(speedDTO);
                 stringIntegerMap = tbCarMapper.moreDayRatio(speedDTO);
             } else {
+                System.out.println("****");
                 cameraGunListCars = tbCarMapper.getOneDayCars(speedDTO);
+                System.out.println("--");
                 stringIntegerMap = tbCarMapper.oneDayRatio(speedDTO);
+                System.out.println("++");
             }
-
-
-            //List<SpeedVO> carPage = cameraGunListCars.stream().skip((speedDTO.getPage() - 1) * speedDTO.getItems()).limit(speedDTO.getItems()).collect(Collectors.toList());
-
-            if (speedDTO.getChannelId() != null) {
-
-                return RStatic.ok("查询成功").data("channelName", channel.getName()).data("carPage", cameraGunListCars).data("dayRatio", stringIntegerMap).data("page", speedDTO.getPage()).data("items", speedDTO.getItems());
-            } else {
+            if(speedDTO.getPage()!=null)
+            {
+                return RStatic.ok("查询成功").data("carPage", cameraGunListCars).data("dayRatio", stringIntegerMap).data("page", speedDTO.getPage()+1).data("items", speedDTO.getItems());
+            }else {
                 return RStatic.ok("查询成功").data("carPage", cameraGunListCars).data("dayRatio", stringIntegerMap).data("page", speedDTO.getPage()).data("items", speedDTO.getItems());
+
             }
+
         } catch (Exception e) {
             System.out.println("错误原因：" + e.getMessage());
         }
@@ -76,8 +75,11 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
 
     @Override
     public RStatic channelOneCarData(SpeedDTO speedDTO) {
+        if (speedDTO.getPage()!=null && speedDTO.getPage()!=null)
+        {
+            speedDTO.setPage((speedDTO.getPage()-1)*speedDTO.getItems());
 
-        //speedDTO.setPage((speedDTO.getPage()-1)*speedDTO.getItems());
+        }
         Map<Integer, Map<String, Integer>> map = new HashMap<>();
 
         Date hour = new Date();
