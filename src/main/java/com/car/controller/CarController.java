@@ -28,9 +28,19 @@ public class CarController {
     private String staticAccessPath;
     @Value("${file.uploadFolder}")
     private String uploadFolder;
+    @Value("${file.scan}")
+    private String scanPath;
 
     @Autowired
     private ScanService scanService;
+
+    @ApiOperation("在扫描目录下创建文件夹")
+    @PostMapping("/api/util/createDir")
+    public RStatic createDir(@RequestParam("dirName") String dirName){
+        File file = new File(scanPath+dirName);
+        boolean mkdir = file.mkdir();
+        return RStatic.ok("创建成功").data("success",mkdir);
+    }
 
     @ApiOperation("上传文件")
     @PostMapping("/api/util/uploadFile")
