@@ -9,6 +9,7 @@ import java.util.TimeZone;
 public class DateUtil {
 
     //处理时间
+    // TODO: 2020/12/25 有并发安全问题，待优化
     public static Date strParseData(String format, String dateStr){
         if (null == dateStr){
             return null;
