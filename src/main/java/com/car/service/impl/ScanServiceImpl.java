@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.car.entity.TbCameraGunEntity;
 import com.car.entity.TbCarEntity;
 import com.car.entity.bean.OneImg;
+import com.car.exception.BizException;
 import com.car.service.ScanService;
 import com.car.service.TbCarService;
 import com.car.util.FileUtil;
@@ -154,6 +155,7 @@ public class ScanServiceImpl implements ScanService {
             }catch (Exception e){
                 e.printStackTrace();
                 error.add(file);
+                throw new BizException("文件解析错误");
             }
         }
         tbCarService.saveBatch(result);
