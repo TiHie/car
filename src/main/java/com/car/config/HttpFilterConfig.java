@@ -25,6 +25,7 @@ public class HttpFilterConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/swagger-resources/**")
                 .excludePathPatterns("/api/user/checkToken")
                 .excludePathPatterns("/swagger-ui.html/swagger-resources/configuration/ui")
-                .excludePathPatterns("/api/util/uploadFile");
+                .excludePathPatterns("/api/util/uploadFile")
+                .excludePathPatterns("/api/regexdemo/**");
     }
 }

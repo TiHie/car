@@ -15,6 +15,8 @@ import java.util.regex.Pattern;
  * 这里的数据全局共享
  */
 public class RuntimeDataUtil {
+    //tbRegex数据：k:regexName, v:正则表达式
+    public static Map<String,String> regexCodeCache = null;
     //摄像枪数据 k:id v:摄像枪信息
     public static Map<Integer, TbCameraGunEntity> cameraGunEntityMap = null;
     //今天的日期

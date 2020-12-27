@@ -28,6 +28,14 @@ public class MatchLXLServiceImpl implements MatchService {
         name = name.split("\\.")[0];
         //获取摄像枪对象
         TbCameraGunEntity tbCameraGunEntity = RuntimeDataUtil.cameraGunEntityMap.get(gunId);
+        if(tbCameraGunEntity == null){
+            TbCameraGunServiceImpl tbCameraGunService = new TbCameraGunServiceImpl();
+            List<TbCameraGunEntity> list = tbCameraGunService.list();
+            list.forEach(e->{
+                RuntimeDataUtil.cameraGunEntityMap.put(e.getChannelId(),e);
+            });
+            tbCameraGunEntity = RuntimeDataUtil.cameraGunEntityMap.get(gunId);
+        }
         //获取表达式，获取分隔符
         String rule = tbCameraGunEntity.getRule();
         String split = tbCameraGunEntity.getSplitStr();
@@ -83,7 +91,7 @@ public class MatchLXLServiceImpl implements MatchService {
 //                RuntimeDataUtil.dateMap.put(today,todayDay);
 //            }
 //            tbCarEntity.setShootingDate(todayDay);
-            tbCarEntity.setShootingDate(DateUtil.strParseData("yyyyMMdd",dataMap.get("shootingTime")));
+            tbCarEntity.setShootingDate(DateUtil.strParseData("yyyyMMdd",dataMap.get("shootingTime").substring(0,8)));//取得的是date而不是datetime
         }
         return tbCarEntity;
     }
