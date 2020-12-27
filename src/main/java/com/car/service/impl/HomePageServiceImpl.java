@@ -48,10 +48,10 @@ public class HomePageServiceImpl implements HomePageService {
      * @return
      */
     @Override
-    public RStatic homePage(Integer page, Integer items) {
+    public RStatic homePage(String date,Integer page, Integer items) {
         Integer channelCount = homePageDataMapper.getChannelCount();
         Integer startInteger = (page-1)*items;
-        List<HomePageVo> homePageVoList = homePageDataMapper.selectHomePageData(startInteger, items);
+        List<HomePageVo> homePageVoList = homePageDataMapper.selectHomePageData(date,startInteger, items);
         return RStatic.ok("查询成功").data("homePageVoList",homePageVoList).data("total",channelCount);
     }
 }

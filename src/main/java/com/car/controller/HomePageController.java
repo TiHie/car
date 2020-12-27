@@ -21,8 +21,8 @@ public class HomePageController {
 
     @ApiOperation("首页通道展示")
     @GetMapping("/api/v1/home")
-    public RStatic selectHomePageData(Integer page,Integer items){
-        return homePageService.homePage(page, items);
+    public RStatic selectHomePageData(String date,Integer page,Integer items){
+        return homePageService.homePage(date,page, items);
     }
 
 }

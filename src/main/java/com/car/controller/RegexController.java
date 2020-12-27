@@ -78,7 +78,8 @@ public class RegexController {
 
     @ApiOperation("传入：20201201010203_蓝_粤B00352_卡口车速65.jpg、16")
     @GetMapping("/api/regexdemo/v3/{fileName}/{gunId}")
-    public RStatic regexDemoV3(@PathVariable("gunId") Integer gunId, @PathVariable("fileName") String fileName){
+    public RStatic regexDemoV3(@PathVariable("gunId") Integer
+                                           gunId, @PathVariable("fileName") String fileName){
         TbCarEntity match = matchWJZServiceImpl.match(fileName, gunId);
         return RStatic.ok("ok").data("data",match);
     }
