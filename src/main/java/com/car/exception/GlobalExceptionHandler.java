@@ -19,22 +19,25 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BizException.class)
     @ResponseBody
-    public RStatic bizExceptionHandler(HttpRequest req, BizException bizException) {
+    public RStatic bizExceptionHandler(Exception bizException) {
         log.error("业务异常，原因：" + bizException.getMessage());
+        bizException.printStackTrace();
         return RStatic.error(bizException.getMessage());
     }
 
     @ExceptionHandler(NullPointerException.class)
     @ResponseBody
-    public RStatic npeExceptionHandler(HttpRequest req,NullPointerException e){
+    public RStatic npeExceptionHandler(Exception e){
         log.error("空指针异常,原因："+e.getMessage());
+        e.printStackTrace();
         return RStatic.error("空指针异常，原因："+e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public RStatic commonExceptionHandler(HttpRequest req,Exception e){
+    public RStatic commonExceptionHandler(Exception e){
         log.error("未知异常，原因："+e.getMessage());
+        e.printStackTrace();
         return RStatic.error("未知异常，原因："+e.getMessage());
     }
 
