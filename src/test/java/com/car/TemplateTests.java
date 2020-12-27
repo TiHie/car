@@ -8,6 +8,7 @@ import com.car.entity.TbCarEntity;
 import com.car.entity.TbChannelEntity;
 import com.car.entity.vo.CameraGunVo;
 import com.car.entity.vo.ChannelVo;
+import com.car.entity.vo.HomePageVo;
 import com.car.mapper.HomePageDataMapper;
 import com.car.mapper.TbCameraGunMapper;
 import com.car.service.TbCameraGunService;
@@ -41,6 +42,13 @@ class TemplateTests {
 
     @Autowired
     TbCameraGunMapper tbCameraGunMapper;
+
+    @Test
+    void testHomePage(){
+        List<HomePageVo> homePageVos = homePageDataMapper.selectHomePageData("2020-12-26", 0, 10);
+        System.out.println(homePageVos);
+        homePageVos.forEach(System.out::println);
+    }
 
     @Test
     void contextLoads() {

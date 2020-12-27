@@ -6,14 +6,12 @@ import com.car.entity.bean.OneSpeed;
 import com.car.service.ScanService;
 import com.car.service.TbCameraGunService;
 import com.car.service.TbRegexCodeService;
-import com.car.service.impl.TbCameraGunServiceImpl;
 import com.car.util.DateUtil;
 import com.car.util.RuntimeDataUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;

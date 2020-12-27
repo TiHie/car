@@ -3,8 +3,10 @@ package com.car.mapper;
 import com.car.entity.dto.CarMassageDto;
 import com.car.entity.vo.HomePageVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 /**
@@ -48,5 +50,8 @@ public interface HomePageDataMapper {
      * @param items
      * @return
      */
-    public List<HomePageVo> selectHomePageData(Integer startInteger,Integer items);
+    public List<HomePageVo> selectHomePageData(
+            @Param("date") String date,
+            @Param("startPage") Integer startInteger,
+            @Param("items") Integer items);
 }
