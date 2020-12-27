@@ -170,7 +170,8 @@ public class ScanServiceImpl implements ScanService {
             try{
                 String[] split = file.split("/");
                 String fileName = split[split.length-1];//拿到最后一个元素作为文件名
-                TbCarEntity match = matchLXLService.match(fileName, gunId);
+                //TbCarEntity match = matchLXLService.match(fileName, gunId);
+                TbCarEntity match = matchWJZService.match(fileName, gunId);
                 match.setCarImage(ip+stitch+"/"+fileName);
                 match.setCameraGunId(gunId);
                 //true超速，false没有
