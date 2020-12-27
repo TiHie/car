@@ -5,6 +5,7 @@ import com.car.service.ChannelService;
 import com.car.util.RStatic;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,7 +64,7 @@ public class ChannelController {
      */
     @GetMapping("/api/v1/channel")
     @ApiOperation("通道表接口-查询")
-    public RStatic seleteChannel(String parameter,int page,int items){
+    public RStatic seleteChannel(@ApiParam("输入查询参数，可以是限速、通道名、备注") String parameter, int page, int items){
         return channelService.selectChannel(parameter, page, items);
     }
 }

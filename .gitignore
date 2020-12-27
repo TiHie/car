@@ -3,3 +3,5 @@ target
 car.iml
 *.iml
 .mvn
+**/static/**
+application-wjz.properties
