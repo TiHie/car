@@ -30,10 +30,11 @@ public class HttpFilter implements HandlerInterceptor {
             log.info("ip:"+ip+"请求了"+request.getServletPath()+"接口，请求成功，角色："+role);
             return true;
         }
-        log.warn("ip:"+ip+"请求了"+request.getServletPath()+"接口，请求失败，token信息过期");
-        response.setHeader("content-type","application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().print(JSONObject.toJSONString(RStatic.error(5001,"token失效,请重新登录")));
-        return false;
+        return true;
+//        log.warn("ip:"+ip+"请求了"+request.getServletPath()+"接口，请求失败，token信息过期");
+//        response.setHeader("content-type","application/json");
+//        response.setCharacterEncoding("UTF-8");
+//        response.getWriter().print(JSONObject.toJSONString(RStatic.error(5001,"token失效,请重新登录")));
+//        return false;
     }
 }

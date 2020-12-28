@@ -35,6 +35,7 @@ public class HomePageVo {
     private String cameraName;
     private Integer channelId;
     private String location;
+    private String channelName;
     private Integer carId;
     private String licensePlate;
     private String carImage;

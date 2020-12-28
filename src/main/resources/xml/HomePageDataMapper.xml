@@ -16,15 +16,15 @@
 
     <select id="selectHomePageData" resultType="com.car.entity.vo.HomePageVo">
         SELECT tcg.id AS camera_id,tcg.name AS camera_name,
-               channel_id,location,
+               channel_id,location,tcl.name AS channel_name,
                tc.id AS car_id,license_plate,car_image,shooting_time
         FROM
             tb_camera_gun tcg,tb_car tc,tb_channel tcl
-           ,(SELECT MAX(tc.shooting_time) maxtime,tcg.id
+           ,(SELECT MAX(tc.shooting_time) maxtime,tcl.id
              FROM tb_camera_gun tcg,tb_car tc,tb_channel tcl
              WHERE tcg.channel_id=tcl.id AND tc.camera_gun_id=tcg.id
                AND tc.shooting_date=#{date}
-             GROUP BY tcg.id) result
+             GROUP BY tcl.id) result
         WHERE
             tcg.channel_id=tcl.id AND tc.camera_gun_id=tcg.id
           AND tc.shooting_date=#{date}
