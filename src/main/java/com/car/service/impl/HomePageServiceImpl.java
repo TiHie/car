@@ -8,8 +8,12 @@ import com.car.service.TbCameraGunService;
 import com.car.service.TbCarService;
 import com.car.service.TbChannelService;
 import com.car.util.RStatic;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,6 +55,9 @@ public class HomePageServiceImpl implements HomePageService {
     public RStatic homePage(String date,Integer page, Integer items) {
         Integer channelCount = homePageDataMapper.getChannelCount();
         Integer startInteger = (page-1)*items;
+        if(date == null || StringUtils.isEmpty(date)){
+            date = DateTime.now().toString("yyyy-MM-dd");
+        }
         List<HomePageVo> homePageVoList = homePageDataMapper.selectHomePageData(date,startInteger, items);
         return RStatic.ok("查询成功").data("homePageVoList",homePageVoList).data("total",channelCount);
     }

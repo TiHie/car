@@ -194,7 +194,8 @@ public class ScanServiceImpl implements ScanService {
 //        TbCarEntity match = matchLXLService.match(substring, gunId);
         TbCarEntity match = matchWJZService.match(substring, gunId);
         boolean isMatches = true;
-        if(StringUtils.isEmpty(match.getShootingTime())  || StringUtils.isEmpty(match.getLicensePlate()) || StringUtils.isEmpty(match.getSpeed()) || StringUtils.isEmpty(match.getChannelName() == null)){
+        if(StringUtils.isEmpty(match.getShootingTime())  || StringUtils.isEmpty(match.getLicensePlate()) ||
+                StringUtils.isEmpty(match.getSpeed()) || StringUtils.isEmpty(match.getChannelName() == null)){
             isMatches = false;
         }
         return isMatches;
