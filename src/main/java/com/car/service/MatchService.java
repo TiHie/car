@@ -9,16 +9,17 @@ import com.car.util.RegRule2EntityFieldMapper;
 import com.car.util.RuntimeDataUtil;
 import com.car.util.WirePropertyToObjUtil;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-import sun.rmi.runtime.Log;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.util.regex.Pattern.*;
+import static java.util.regex.Pattern.compile;
 
 public interface MatchService {
     TbCarEntity match(String fileName, String regStr, List<String> regGroup2EntityField);

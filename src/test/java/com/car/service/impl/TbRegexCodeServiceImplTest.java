@@ -6,6 +6,7 @@ import com.car.entity.TbRegexCodeEntity;
 import com.car.service.TbCameraGunService;
 import com.car.service.TbRegexCodeService;
 import com.car.util.RuntimeDataUtil;
+import org.joda.time.DateTime;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -25,5 +26,6 @@ class TbRegexCodeServiceImplTest {
 //        //     * @param regexPatternInChinese 抓拍时间_车牌颜色_车牌名称_通道名称车速
 //        TbCarEntity tbCarEntity = new MatchWJZServiceImpl().match("20201201010203_蓝_粤B00352_卡口车速65.jpg", "抓拍时间_车牌颜色_车牌名称_通道名称车速");
 //        System.out.println(tbCarEntity.toString());
+//        System.out.println(DateTime.now().toString("yyyy-MM-dd"));
     }
 }
