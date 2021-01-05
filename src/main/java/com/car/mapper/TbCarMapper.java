@@ -31,6 +31,14 @@ public interface TbCarMapper extends BaseMapper<TbCarEntity> {
     public List<SpeedVO> getOneDayCars(@Param("speedDTO") SpeedDTO speedDTO);
 
     /**
+     *
+     * @param gunId
+     * @param carId
+     * @return
+     */
+    public SpeedVO getSpeedVo(@Param("gunId")Integer gunId,@Param("carId") Integer carId);
+
+    /**
      * 导出多天
      * @param speedDTO
      * @return

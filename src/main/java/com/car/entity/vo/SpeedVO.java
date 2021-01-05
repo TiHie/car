@@ -29,4 +29,5 @@ public class SpeedVO {
     private Integer carSpeed;
     private Integer channelSpeed;
     private String cameraGunLocation;
+    private Date channelCreateTime;
 }

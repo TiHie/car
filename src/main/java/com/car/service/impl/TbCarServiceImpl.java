@@ -81,7 +81,7 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
 
         }
         Map<Integer, Map<String, Integer>> map = new HashMap<>();
-        List<SpeedVO> cameraGunListCars = tbCarMapper.getOneDayCars(speedDTO);
+        //List<SpeedVO> cameraGunListCars = tbCarMapper.getOneDayCars(speedDTO);
 
         Date hour = new Date();
         SimpleDateFormat df = new SimpleDateFormat("HH");
@@ -101,22 +101,22 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
         }
 
 
-        System.out.println("=="+cameraGunListCars.size());
-        SpeedVO car = new SpeedVO();
-        if(cameraGunListCars.size() > 0)
-        {
-            car = cameraGunListCars.get(0);
-        }else {
-            car = null;
-        }
+//        System.out.println("=="+cameraGunListCars.size());
+//        SpeedVO car = new SpeedVO();
+//        if(cameraGunListCars.size() > 0)
+//        {
+//            car = cameraGunListCars.get(0);
+//        }else {
+//            car = null;
+//        }
 
         if (speedDTO.getChannelId() != null) {
 
             Map<String, Integer> stringIntegerMap = tbCarMapper.oneDayRatio(speedDTO);
-            return RStatic.ok("查询成功").data("car", car).data("hourRatio", map).data("dayRatio", stringIntegerMap);
+            return RStatic.ok("查询成功").data("hourRatio", map).data("dayRatio", stringIntegerMap);
 
         } else {
-            return RStatic.ok("查询成功").data("car", car).data("hourRatio", map);
+            return RStatic.ok("查询成功").data("hourRatio", map);
 
         }
     }
