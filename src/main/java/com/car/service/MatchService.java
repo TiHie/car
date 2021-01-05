@@ -86,6 +86,12 @@ public interface MatchService {
                 //          解决方案：采用默认映射类实现中文到英文字段的映射；
                 //      不过还有个问题，系统固定了中文字段到英文属性的映射，无法实现用户自定义，
                 //          待实现解决方案：在regexCodeDb或者缓存中添加字段属性映射，将用户自定义的字段与系统默认6个字段进行映射，即可实现用户自定义动态属性）
+                System.out.println("属性注入日志：被注入的字段："+regexCodeListToWire.get(i)+"被注入的数据："+fileNameMatcher.group(i+1));
+                if(regexCodeListToWire.get(i) == null){
+                    System.out.println("---------------error---------：注入属性为空，regexCodeListToWire索引为："+i+"；regexCodeListToWire容量为："+regexCodeListToWire.size());
+                    continue;
+
+                }
                 WirePropertyToObjUtil.wire(tbCarEntity, regexCodeListToWire.get(i),fileNameMatcher.group(i+1));
             }
         }else{

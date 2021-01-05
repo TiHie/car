@@ -103,6 +103,7 @@ public class MatchWJZServiceImpl implements MatchService {
     @Override
     public TbCarEntity match(String name, int gunId) {
         TbCameraGunEntity byId = tbCameraGunService.getById(gunId);
+        System.out.println(byId);
         String regexStrInChinese = byId.getRule();
         if(compile("([\\u4e00-\\u9fa5]{2,})").matcher(regexStrInChinese).find()) {
             //合法规则(目前主流规则为lxl解析器的英文规则，此处判断是否为正则的中文规则)
