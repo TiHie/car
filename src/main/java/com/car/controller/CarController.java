@@ -72,9 +72,9 @@ public class CarController {
                 return RStatic.error("上传失败");
             }
             //RedisChannelInfo redisChannelInfo = new RedisChannelInfo();
-
-            SpeedVO speedVo = tbCarMapper.getSpeedVo(gunId, tbCarEntity.getId());
-
+            SpeedVO speedVo = new SpeedVO();
+            speedVo = tbCarMapper.getSpeedVo(gunId, tbCarEntity.getId());
+            System.out.println("speedVO:"+speedVo.toString());
 //            redisChannelInfo.setLatestCameraId(gunId);
 //            redisChannelInfo.setPicUrl(tbCarEntity.getCarImage());
 //            TbChannelEntity tbChannelEntity = tbChannelService.findChannelByGunId(gunId);
@@ -89,7 +89,7 @@ public class CarController {
 //            speedVO.setShootingDate(tbCarEntity.getShootingDate());
 //            speedVO.setStatus(tbCarEntity.getStatus()==true?1:0);
 //            redisChannelInfo.setSpeedVO(speedVO);
-            stringRedisTemplate.opsForValue().set("csxt_home_page_cache_by_channel_id_"+speedVo.getChannelId(), JSON.toJSONString(SpeedVO.class));
+            stringRedisTemplate.opsForValue().set("csxt_home_page_cache_by_channel_id_"+speedVo.getChannelId(), JSON.toJSONString(speedVo));
             return RStatic.ok("上传成功").
                     data("url",tbCarEntity.getCarImage()).
                     data("fileName",multipartFile.getOriginalFilename());

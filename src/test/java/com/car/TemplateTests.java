@@ -9,8 +9,10 @@ import com.car.entity.TbChannelEntity;
 import com.car.entity.vo.CameraGunVo;
 import com.car.entity.vo.ChannelVo;
 import com.car.entity.vo.HomePageVo;
+import com.car.entity.vo.SpeedVO;
 import com.car.mapper.HomePageDataMapper;
 import com.car.mapper.TbCameraGunMapper;
+import com.car.mapper.TbCarMapper;
 import com.car.service.TbCameraGunService;
 import com.car.service.TbCarService;
 import com.car.service.TbChannelService;
@@ -39,9 +41,16 @@ class TemplateTests {
     TbChannelService tbChannelService;
     @Autowired
     TbCameraGunService tbCameraGunService;
-
+    @Autowired
+    TbCarMapper tbCarMapper;
     @Autowired
     TbCameraGunMapper tbCameraGunMapper;
+
+    @Test
+    void test(){
+        SpeedVO speedVo = tbCarMapper.getSpeedVo(21, 11152);
+        System.out.println("speedVO:"+speedVo.toString());
+    }
 
     @Test
     void testHomePage(){
