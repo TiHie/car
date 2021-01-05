@@ -3,6 +3,7 @@ package com.car.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.car.entity.vo.RedisChannelInfo;
+import com.car.entity.vo.SpeedVO;
 import com.car.mapper.HomePageDataMapper;
 import com.car.service.HomePageService;
 import com.car.service.TbCameraGunService;
@@ -68,7 +69,7 @@ public class HomePageServiceImpl implements HomePageService {
 //        List<HomePageVo> homePageVoList = homePageDataMapper.selectHomePageData(date,startInteger, items);
 
         //更新缓存实现方式，从redis获取首页最新数据：key: csxt_home_page_cache_by_channel_id_{channelId}
-        ArrayList<RedisChannelInfo> redisChannelInfos = new ArrayList<>();
+        ArrayList<SpeedVO> redisChannelInfos = new ArrayList<>();
         int limitCounter = 0;
         Set<String> keys = stringRedisTemplate.keys("csxt_home_page_cache_by_channel_id_*");
         for (String key:
@@ -76,7 +77,7 @@ public class HomePageServiceImpl implements HomePageService {
             if(limitCounter >= Integer.parseInt(limit)){
                 break;
             }
-            RedisChannelInfo parsedHomePageObj = JSONObject.parseObject(stringRedisTemplate.opsForValue().get(key), RedisChannelInfo.class);
+            SpeedVO parsedHomePageObj = JSONObject.parseObject(stringRedisTemplate.opsForValue().get(key), SpeedVO.class);
             redisChannelInfos.add(parsedHomePageObj);
             limitCounter++;
         }
