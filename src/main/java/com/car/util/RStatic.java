@@ -25,6 +25,10 @@ public class RStatic {
         return new RStatic(ResultCode.ERROR,message);
     }
 
+    //带code的异常
+    public static RStatic error(int code,String msg){
+        return new RStatic(code,msg);
+    }
 
     public RStatic data(Object k, Object v){
         if (null == data){

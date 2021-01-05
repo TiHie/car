@@ -22,6 +22,6 @@ public interface HomePageService {
      * @param items
      * @return
      */
-    public RStatic homePage(Integer page,Integer items);
+    public RStatic homePage(String date,Integer page,Integer items);
 
 }

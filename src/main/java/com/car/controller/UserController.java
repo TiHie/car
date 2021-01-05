@@ -1,12 +1,15 @@
 package com.car.controller;
 
 import com.car.entity.TbUserEntity;
+import com.car.entity.dto.LoginDto;
 import com.car.service.UserService;
 import com.car.util.RStatic;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -49,7 +52,7 @@ public class UserController {
      */
     @ApiOperation("用户管理接口-修改")
     @PutMapping("/api/v1/user")
-    public RStatic updateUser(@RequestBody TbUserEntity tbUserEntity){
+    public RStatic updateUser(@RequestBody TbUserEntity tbUserEntity) throws Exception {
         return userService.updateUser(tbUserEntity);
     }
 
@@ -68,13 +71,13 @@ public class UserController {
 
     /**
      * 用户登录
-     * @param map
+     * @param
      * @return
      */
     @ApiOperation("用户登录")
     @PostMapping("/api/v1/user/login")
-    public RStatic login(@RequestBody Map<String, Object> map) throws Exception{
-        return userService.login(map);
+    public RStatic login(@RequestBody LoginDto loginDto, HttpServletRequest request) throws Exception{
+        return userService.login(loginDto.getUsername(),loginDto.getPassword(),request);
     }
 
     /**

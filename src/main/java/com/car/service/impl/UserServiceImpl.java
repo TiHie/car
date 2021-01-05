@@ -4,17 +4,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.car.entity.TbUserEntity;
-import com.car.entity.vo.UserVO;
 import com.car.service.TbUserService;
 import com.car.service.UserService;
-import com.car.util.Md5Util;
-import com.car.util.RStatic;
-import com.car.util.RuntimeDataUtil;
+import com.car.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -34,6 +32,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public RStatic addUser(TbUserEntity tbUserEntity){
+
         String username = tbUserEntity.getUsername();
         try {
             QueryWrapper<TbUserEntity> userCheckQw = new QueryWrapper<>();
@@ -64,7 +63,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public RStatic deleteUser(Map<String, Object> map) {
-        ArrayList<String> userList = (ArrayList<String>)map.get("ids");
+        ArrayList<Integer> userList = (ArrayList<Integer>)map.get("ids");
         if (userList == null){
             return RStatic.error("删除内容为空");
         }else {
@@ -83,12 +82,16 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public RStatic updateUser(TbUserEntity tbUserEntity) {
+    public RStatic updateUser(TbUserEntity tbUserEntity) throws Exception {
+
         String username = tbUserEntity.getUsername();
         QueryWrapper<TbUserEntity> userCheckQw = new QueryWrapper<>();
         userCheckQw.eq("username",username);
         TbUserEntity userCheck = tbUserService.getOne(userCheckQw);
         if (userCheck == null || userCheck.getUsername().equals(username)){
+            String password = tbUserEntity.getPassword();
+            String Md5Password = Md5Util.MD5Hax(password);
+            tbUserEntity.setPassword(Md5Password);
             boolean saveOrUpdate = tbUserService.saveOrUpdate(tbUserEntity);
             if (saveOrUpdate){
                 return RStatic.ok("修改成功");
@@ -130,32 +133,39 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RStatic login(@RequestBody Map<String, Object> map) throws Exception {
-        UserVO userVO = new UserVO();
-        String pwd = Md5Util.MD5Hax(map.get("password").toString());
-        System.out.println("userName:"+map.get("username"));
-        System.out.println("pwd:"+pwd);
-
+    public RStatic login(String userName, String password, HttpServletRequest request) {
+        String pwd = null;
+        try {
+            pwd = Md5Util.MD5Hax(password);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         QueryWrapper<TbUserEntity> userWrapper = new QueryWrapper<>();
-
-        userWrapper.eq("username",map.get("username")).eq("password",pwd);
+        userWrapper.eq("username",userName).eq("password",pwd);
         TbUserEntity user = tbUserService.getOne(userWrapper);
         if (user == null) {
             return RStatic.error("账号或密码错误");
         }else {
-            System.out.println(user.toString());
-            userVO.setId(user.getId());
-            userVO.setUsername(user.getUsername());
-            userVO.setAvatar(user.getAvatar());
-            userVO.setCreateBy(user.getCreateBy());
-            userVO.setCreateTime(user.getCreateTime());
-            userVO.setDeleted(user.isDeleted());
-            userVO.setRemark(user.getRemark());
-            userVO.setRole(user.getRole());
-
             RuntimeDataUtil.roleMap.put(user.getUsername(),user.getRole());
-            return RStatic.ok("登录成功").data("user",userVO);
+            Map<String,Object> map = new HashMap<>();
+            String ip = NetWorkUtil.getIpAddress(request);
+            map.put("username",userName);
+            map.put("role",user.getRole());
+            String token = TokenUtil.encode(user.getId()+"", map, ip);
+            return RStatic.ok("登录成功")
+                    .data("user",user)
+                    .data("token",token);
         }
+    }
+
+    @Override
+    public RStatic login(TbUserEntity tbUserEntity) throws Exception {
+        return null;
+    }
+
+    @Override
+    public RStatic login(Map<String, Object> map) throws Exception {
+        return null;
     }
 
     @Override

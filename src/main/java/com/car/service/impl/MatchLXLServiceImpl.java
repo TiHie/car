@@ -7,6 +7,7 @@ import com.car.util.DateUtil;
 import com.car.util.RuntimeDataUtil;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,14 @@ public class MatchLXLServiceImpl implements MatchService {
         name = name.split("\\.")[0];
         //获取摄像枪对象
         TbCameraGunEntity tbCameraGunEntity = RuntimeDataUtil.cameraGunEntityMap.get(gunId);
+        if(tbCameraGunEntity == null){
+            TbCameraGunServiceImpl tbCameraGunService = new TbCameraGunServiceImpl();
+            List<TbCameraGunEntity> list = tbCameraGunService.list();
+            list.forEach(e->{
+                RuntimeDataUtil.cameraGunEntityMap.put(e.getChannelId(),e);
+            });
+            tbCameraGunEntity = RuntimeDataUtil.cameraGunEntityMap.get(gunId);
+        }
         //获取表达式，获取分隔符
         String rule = tbCameraGunEntity.getRule();
         String split = tbCameraGunEntity.getSplitStr();
@@ -77,12 +86,13 @@ public class MatchLXLServiceImpl implements MatchService {
             tbCarEntity.setHourTime(date.getHours());
             tbCarEntity.setShootingTime(date);
             String today = dataMap.get("shootingTime").substring(0,8)+"000000";
-            Date todayDay = RuntimeDataUtil.dateMap.get(today);
-            if (null == todayDay){
-                todayDay = DateUtil.strParseData("yyyyMMddHHmmss",today);
-                RuntimeDataUtil.dateMap.put(today,todayDay);
-            }
-            tbCarEntity.setShootingDate(todayDay);
+//            Date todayDay = RuntimeDataUtil.dateMap.get(today);
+//            if (null == todayDay){
+//                todayDay = DateUtil.strParseData("yyyyMMddHHmmss",today);
+//                RuntimeDataUtil.dateMap.put(today,todayDay);
+//            }
+//            tbCarEntity.setShootingDate(todayDay);
+            tbCarEntity.setShootingDate(DateUtil.strParseData("yyyyMMdd",dataMap.get("shootingTime").substring(0,8)));//取得的是date而不是datetime
         }
         return tbCarEntity;
     }

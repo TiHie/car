@@ -1,7 +1,6 @@
 package com.car.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.car.entity.TbCameraGunEntity;
 import com.car.entity.TbCarEntity;
 import com.car.entity.TbChannelEntity;
 import com.car.entity.dto.SpeedDTO;
@@ -11,16 +10,13 @@ import com.car.service.TbCameraGunService;
 import com.car.service.TbCarService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.car.service.TbChannelService;
-import com.car.util.DateUtil;
 import com.car.util.RStatic;
-import com.car.util.RuntimeDataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> implements TbCarService {
@@ -125,6 +121,27 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
         }
     }
 
+//    @Override
+//    public XSSFWorkbook export(SpeedDTO speedDTO) {
+//
+//        try {
+//            List<SpeedVO> cameraGunListCars = new ArrayList<>();
+//            List<SpeedVO> listCar = new ArrayList<>();
+//            SpeedVO carVo = new SpeedVO();
+//            Map<String, Integer> stringIntegerMap = new HashMap<>();
+//
+//            if (speedDTO.getEndTime() != null) {
+//
+//                cameraGunListCars = tbCarMapper.exportMoreDays(speedDTO);
+//            } else {
+//                cameraGunListCars = tbCarMapper.exportOneDay(speedDTO);
+//            }
+//            return exportCar(cameraGunListCars);
+//        }catch (Exception e) {
+//            System.out.println("错误原因："+e.getMessage());
+//        }
+//        return null;
+//    }
     @Override
     public RStatic export(SpeedDTO speedDTO) {
 
@@ -163,5 +180,38 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
         return day;
     }
 
-
+//    public static XSSFWorkbook exportCar(List<SpeedVO> cars){
+//        XSSFWorkbook wb = new XSSFWorkbook();
+//        Sheet sheet = wb.createSheet("Cars");
+//        Row titleRow = sheet.createRow(0);
+//        titleRow.createCell(0).setCellValue("序号");
+//        titleRow.createCell(1).setCellValue("通道名");
+//        titleRow.createCell(2).setCellValue("拍摄日期");
+//        titleRow.createCell(3).setCellValue("车牌");
+//        titleRow.createCell(4).setCellValue("车牌颜色");
+//        titleRow.createCell(5).setCellValue("状态");
+//        titleRow.createCell(6).setCellValue("车速");
+//        titleRow.createCell(7).setCellValue("限速");
+//        titleRow.createCell(8).setCellValue("摄像枪类型");
+//        titleRow.createCell(9).setCellValue("摄像枪地点");
+//        titleRow.createCell(10).setCellValue("图片路径");
+//        int cell = 1;
+//        for (SpeedVO car : cars) {
+//            Row row = sheet.createRow(cell);
+//            row.createCell(0).setCellValue(cell);
+//            row.createCell(1).setCellValue(car.getChannelName());
+//            row.createCell(2).setCellValue(car.getShootingTime());
+//            row.createCell(3).setCellValue(car.getLicensePlate());
+//            row.createCell(4).setCellValue(car.getLicensePlateColor());
+//            row.createCell(5).setCellValue(car.getStatus());
+//            row.createCell(6).setCellValue(car.getCarSpeed());
+//            row.createCell(7).setCellValue(car.getChannelSpeed());
+//            row.createCell(8).setCellValue(car.getCameraGunName());
+//            row.createCell(9).setCellValue(car.getCameraGunLocation());
+//            row.createCell(10).setCellValue(car.getCarImage());
+//            cell++;
+//        }
+//        return wb;
+//
+//    }
 }

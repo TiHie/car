@@ -1,5 +1,11 @@
 package com.car.util;
 
+import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.springframework.format.datetime.joda.DateTimeParser;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,20 +15,23 @@ import java.util.TimeZone;
 public class DateUtil {
 
     //处理时间
+    // TODO: 2020/12/25 有并发安全问题，待优化。已解决
     public static Date strParseData(String format, String dateStr){
         if (null == dateStr){
             return null;
         }
-        //2020 10 22 15 05 39
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
-        Date parse = null;
-        try {
-            parse = simpleDateFormat.parse(dateStr);
-        } catch (ParseException e) {
-            //仅做本地测试使用
-            return new Date();//解析失败，返回当前时间
-        }
-        return parse;
+        System.out.printf("日期：%s,格式:%s",dateStr,format);
+        DateTime targetDateTime = DateTime.parse(dateStr, DateTimeFormat.forPattern(format));
+//        //2020 10 22 15 05 39
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+//        Date parse = null;
+//        try {
+//            parse = simpleDateFormat.parse(dateStr);
+//        } catch (ParseException e) {
+//            //仅做本地测试使用
+//            return new Date();//解析失败，返回当前时间
+//        }
+        return targetDateTime.toDate();
     }
 
     //获取这个时间到下一日 0 点的 ms 数

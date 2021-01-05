@@ -1,9 +1,11 @@
 package com.car;
 
 import com.car.entity.TbCameraGunEntity;
+import com.car.entity.TbRegexCodeEntity;
 import com.car.entity.bean.OneSpeed;
 import com.car.service.ScanService;
 import com.car.service.TbCameraGunService;
+import com.car.service.TbRegexCodeService;
 import com.car.util.DateUtil;
 import com.car.util.RuntimeDataUtil;
 import org.springframework.boot.SpringApplication;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 @ServletComponentScan(basePackages = {"com.car.filter"})
 public class CarMain {
 
+
     public static void main(String[] args) {
         ConfigurableApplicationContext run = SpringApplication.run(CarMain.class, args);
         init(run);
@@ -29,10 +32,15 @@ public class CarMain {
     //初始化运行时数据
     public static void init(ConfigurableApplicationContext run){
         TbCameraGunService tbCameraGunService = run.getBean(TbCameraGunService.class);
+        TbRegexCodeService tbRegexCodeService = run.getBean(TbRegexCodeService.class);
         List<TbCameraGunEntity> entityList = tbCameraGunService.list();
+        List<TbRegexCodeEntity> regexRuleList = tbRegexCodeService.list();
         //使用并发的 map
+        //初始化缓存正则表达式
+        RuntimeDataUtil.regexCodeCache = new ConcurrentHashMap<>(regexRuleList.stream().collect(Collectors.toConcurrentMap(e -> e.getRegexName(),e -> e.getRegexCode())));
+        //初始化缓存cameraGuns
         RuntimeDataUtil.cameraGunEntityMap =
-                new ConcurrentHashMap<>(entityList.stream().collect(Collectors.toMap(e -> e.getId(), e -> e)));
+                new ConcurrentHashMap<>(entityList.stream().collect(Collectors.toConcurrentMap(e -> e.getId(), e -> e)));
 
         //RuntimeDataUtil.today = "2020年10月22日";
         RuntimeDataUtil.today = DateUtil.getTodayMatchStr();
@@ -51,8 +59,8 @@ public class CarMain {
             //假定不是 windows 就是 linux
             RuntimeDataUtil.environment = "linux";
             RuntimeDataUtil.connectStr = "/";
-            System.out.println("linux");
         }
+
 
         ScheduledExecutorService scheduledExecutorService = run.getBean(ScheduledExecutorService.class);
         //定时周期任务，每天 0 点执行，更新扫描的文件夹

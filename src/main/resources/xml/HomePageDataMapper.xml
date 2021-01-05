@@ -15,18 +15,26 @@
     </select>
 
     <select id="selectHomePageData" resultType="com.car.entity.vo.HomePageVo">
-        SELECT channel.id AS id, channel.`name` AS `name`, image
-        FROM tb_camera_gun AS camera
-        JOIN tb_channel AS channel ON camera.channel_id = channel.id
-        JOIN (select car.camera_gun_id,car.shooting_time,car.car_image AS image FROM tb_car AS car JOIN(SELECT camera_gun_id,max(shooting_time) shooting_time FROM tb_car GROUP BY camera_gun_id) AS st ON st.shooting_time= car.shooting_time AND st.camera_gun_id = car.camera_gun_id) AS car ON car.camera_gun_id = camera.id
-        WHERE channel.is_deleted = 0
-        LIMIT #{startInteger},#{items}
+        SELECT tcg.id AS camera_id,tcg.name AS camera_name,
+               channel_id,location,tcl.name AS channel_name,
+               tc.id AS car_id,license_plate,car_image,shooting_time
+        FROM
+            tb_camera_gun tcg,tb_car tc,tb_channel tcl
+           ,(SELECT MAX(tc.shooting_time) maxtime,tcl.id
+             FROM tb_camera_gun tcg,tb_car tc,tb_channel tcl
+             WHERE tcg.channel_id=tcl.id AND tc.camera_gun_id=tcg.id
+               AND tc.shooting_date=#{date}
+             GROUP BY tcl.id) result
+        WHERE
+            tcg.channel_id=tcl.id AND tc.camera_gun_id=tcg.id
+          AND tc.shooting_date=#{date}
+          AND tc.camera_gun_id=result.id AND tc.shooting_time=result.maxtime
+        LIMIT #{startPage},#{items}
     </select>
     <select id="getChannelCount" resultType="java.lang.Integer">
          SELECT COUNT(*)
          FROM tb_channel
          WHERE is_deleted = 0
     </select>
-
 
 </mapper>

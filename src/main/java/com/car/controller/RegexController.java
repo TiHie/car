@@ -23,6 +23,7 @@ public class RegexController {
     @Autowired
     @Qualifier(value = "MatchWJZServiceImpl")
     MatchService matchWJZServiceImpl;
+
     private static Map<String,String> mockRegDb;
 
 //"(\\d{14})_([\\u4e00-\\u9fa5])_([\\u4e00-\\u9fa5]{1}[A-Z]{1}[A-Z_0-9]{5})_([\\u4e00-\\u9fa5]{2,}\\d{1,3})";
@@ -34,13 +35,14 @@ public class RegexController {
                 put("车牌名称","([\\u4e00-\\u9fa5]{1}[A-Z]{1}[A-Z_0-9]{5})");
                 put("通道名称车速","([\\u4e00-\\u9fa5]{2,}\\d{1,3})");
                 put("通道名称","([\\u4e00-\\u9fa5]{2,})");
-                put("车速","\\d{1,3})");
+                put("车速","(\\d{1,3})");
             }
         };
     }
     //传入-->抓拍时间_车牌颜色_车牌名称_通道名称车速
-    @ApiOperation("传入：抓拍时间_车牌颜色_车牌名称_通道名称车速")
-    @GetMapping("/api/regexdemo/{regStr}")
+    // TODO: 2020/12/26 这里的swagger文档有点毛病，前端没正确显示出下划线
+    @ApiOperation("传入：抓拍时间_车牌颜色_车牌名称_通道名称车速（这里的swagger文档有点毛病，前端没正确显示出下划线，每个字段都有下划线分割）")
+    @GetMapping("/api/regexdemo/v1/{regStr}")
     public RStatic regexDemo(@PathVariable("regStr") String regStr){
         String finalRegStr = ""; //service要传的字段
         List<String> regGroup2EntityField = new ArrayList<>();//service要传的字段
@@ -55,7 +57,7 @@ public class RegexController {
         System.out.println(finalRegStr);
         System.out.println(regGroup2EntityField.toString());
 
-        // TODO: 2020/12/15 wjz文件名解析器入口：第一个参数是要解析的文件名（动态传入），针对同一个通道的文件，后两个参数只需要构造一次；这里的时间是2020年12月1日，日期解析出来是11月 
+        // TODO: 2020/12/15 wjz文件名解析器入口：第一个参数是要解析的文件名（动态传入），针对同一个通道的文件，后两个参数只需要构造一次；这里的时间是2020年12月1日，日期解析出来是11月
         TbCarEntity match = matchWJZServiceImpl.match("20201201010203_蓝_粤B00352_卡口车速65.jpg", finalRegStr, regGroup2EntityField);
         if(match == null){
             System.out.println("match is null");
@@ -66,4 +68,20 @@ public class RegexController {
         System.out.println(match.getLicensePlate());
         return RStatic.ok("ok").data("match",match);
     }
+
+    @ApiOperation("传入：20201201010203_蓝_粤B00352_卡口车速65.jpg、抓拍时间_车牌颜色_车牌名称_通道名称车速（这里的swagger文档有点毛病，前端没正确显示出下划线，每个字段都有下划线分割）")
+    @GetMapping("/api/regexdemo/v2/{regStrInChinese}/{fileName}")
+    public RStatic regexDemoV2(@PathVariable("regStrInChinese") String regStrInChinese, @PathVariable("fileName") String fileName){
+        TbCarEntity match = matchWJZServiceImpl.match(fileName, regStrInChinese);
+        return RStatic.ok("ok").data("data",match);
+    }
+
+    @ApiOperation("传入：20201201010203_蓝_粤B00352_卡口车速65.jpg、16")
+    @GetMapping("/api/regexdemo/v3/{fileName}/{gunId}")
+    public RStatic regexDemoV3(@PathVariable("gunId") Integer
+                                           gunId, @PathVariable("fileName") String fileName){
+        TbCarEntity match = matchWJZServiceImpl.match(fileName, gunId);
+        return RStatic.ok("ok").data("data",match);
+    }
+
 }

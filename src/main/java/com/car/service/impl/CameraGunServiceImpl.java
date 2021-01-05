@@ -85,8 +85,7 @@ public class CameraGunServiceImpl implements CameraGunService{
      */
     @Override
     public RStatic deleteCamerGun(Map<String, Object> map) {
-
-        ArrayList<String> list = (ArrayList<String>)map.get("ids");
+        ArrayList<Integer> list = (ArrayList<Integer>)map.get("ids");
         try {
             if (list != null){
                 boolean removeByIds = tbCameraGunService.removeByIds(list);
@@ -96,7 +95,6 @@ public class CameraGunServiceImpl implements CameraGunService{
                         RuntimeDataUtil.cameraGunEntityMap.remove(Integer.valueOf(id));
                         RuntimeDataUtil.speedMap.remove(Integer.valueOf(id));
                     });
-
                     return RStatic.ok("删除成功");
                 }else {
                     return RStatic.error("删除失败");
@@ -105,7 +103,7 @@ public class CameraGunServiceImpl implements CameraGunService{
                 return RStatic.error("摄像枪id为空");
             }
         }catch (Exception e){
-            return RStatic.error("操作有误");
+            return RStatic.error("操作有误"+e);
         }
     }
 
