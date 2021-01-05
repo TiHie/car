@@ -1,7 +1,6 @@
 package com.car.service;
 
 import com.car.util.RStatic;
-import io.swagger.models.auth.In;
 
 /**
  * @author mowuwalixilo
@@ -18,10 +17,9 @@ public interface HomePageService {
 
     /***
      * 首页通道展示
-     * @param page
-     * @param items
      * @return
+     * @param limit
      */
-    public RStatic homePage(String date,Integer page,Integer items);
+    public RStatic homePage(String limit);
 
 }

@@ -1,19 +1,26 @@
 package com.car.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.car.entity.TbCarEntity;
+import com.car.entity.TbChannelEntity;
 import com.car.entity.dto.SpeedDTO;
+import com.car.entity.vo.RedisChannelInfo;
+import com.car.entity.vo.SpeedVO;
 import com.car.service.ScanService;
 import com.car.service.TbCarService;
+import com.car.service.TbChannelService;
 import com.car.util.RStatic;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sun.rmi.runtime.Log;
 
+import java.awt.print.PrinterAbortException;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -27,6 +34,11 @@ import java.util.List;
 public class CarController {
     @Autowired
     private TbCarService tbCarService;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private TbChannelService tbChannelService;
+
 
     @Value("${file.staticAccessPath}")
     private String staticAccessPath;
@@ -46,7 +58,7 @@ public class CarController {
         return RStatic.ok("创建成功").data("success",mkdir);
     }
 
-    @ApiOperation("上传文件")
+    @ApiOperation("上传文件--这里是系统真是使用的唯一上传文件接口")
     @PostMapping("/api/util/uploadFile")
     public RStatic uploadFile(MultipartFile multipartFile,@RequestParam("gunId") Integer gunId){
         try{
@@ -55,7 +67,25 @@ public class CarController {
             if(!isLegal){return RStatic.error("文件名与扫描枪解析规则不匹配，请修改匹配规则或校正图片名。");}
             multipartFile.transferTo(new File(uploadFolder+multipartFile.getOriginalFilename()));
             TbCarEntity tbCarEntity = scanService.uploadOne(gunId, multipartFile.getOriginalFilename());
-
+            if(tbCarEntity == null){
+                return RStatic.error("上传失败");
+            }
+            RedisChannelInfo redisChannelInfo = new RedisChannelInfo();
+            redisChannelInfo.setLatestCameraId(gunId);
+            redisChannelInfo.setPicUrl(tbCarEntity.getCarImage());
+            TbChannelEntity tbChannelEntity = tbChannelService.findChannelByGunId(gunId);
+            redisChannelInfo.setChannelId(tbChannelEntity.getId());
+            redisChannelInfo.setChannelName(tbChannelEntity.getName());
+            redisChannelInfo.setChannelCreateDate(tbChannelEntity.getCreateTime());
+            SpeedVO speedVO = new SpeedVO();
+            speedVO.setCameraGunId(tbCarEntity.getCameraGunId());
+            speedVO.setCarId(tbCarEntity.getId());
+            speedVO.setCarImage(tbCarEntity.getCarImage());
+            speedVO.setLicensePlate(tbCarEntity.getLicensePlate());
+            speedVO.setShootingDate(tbCarEntity.getShootingDate());
+            speedVO.setStatus(tbCarEntity.getStatus()==true?1:0);
+            redisChannelInfo.setSpeedVO(speedVO);
+            stringRedisTemplate.opsForValue().set("csxt_home_page_cache_by_channel_id_"+redisChannelInfo.getChannelId(), JSON.toJSONString(redisChannelInfo));
             return RStatic.ok("上传成功").
                     data("url",tbCarEntity.getCarImage()).
                     data("fileName",multipartFile.getOriginalFilename());

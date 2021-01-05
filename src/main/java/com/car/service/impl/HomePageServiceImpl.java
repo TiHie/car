@@ -1,20 +1,22 @@
 package com.car.service.impl;
 
 
-import com.car.entity.vo.HomePageVo;
+import com.alibaba.fastjson.JSONObject;
+import com.car.entity.vo.RedisChannelInfo;
 import com.car.mapper.HomePageDataMapper;
 import com.car.service.HomePageService;
 import com.car.service.TbCameraGunService;
 import com.car.service.TbCarService;
 import com.car.service.TbChannelService;
 import com.car.util.RStatic;
-import org.joda.time.DateTime;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.util.Assert;
 
-import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * @author mowuwalixilo
@@ -35,6 +37,9 @@ public class HomePageServiceImpl implements HomePageService {
     @Autowired
     TbCameraGunService tbCameraGunService;
 
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
+
     /***
      * 通过车辆ID查询汽车信息
      * @param carId
@@ -47,18 +52,34 @@ public class HomePageServiceImpl implements HomePageService {
 
     /***
      * 首页通道展示
-     * @param page
-     * @param items
      * @return
+     * @param limit
      */
     @Override
-    public RStatic homePage(String date,Integer page, Integer items) {
-        Integer channelCount = homePageDataMapper.getChannelCount();
-        Integer startInteger = (page-1)*items;
-        if(date == null || StringUtils.isEmpty(date)){
-            date = DateTime.now().toString("yyyy-MM-dd");
+    public RStatic homePage(String limit) {
+        if(!StringUtils.isNumeric(limit)){
+            return RStatic.error("分页参数非法");
         }
-        List<HomePageVo> homePageVoList = homePageDataMapper.selectHomePageData(date,startInteger, items);
-        return RStatic.ok("查询成功").data("homePageVoList",homePageVoList).data("total",channelCount);
+//        Integer channelCount = homePageDataMapper.getChannelCount();
+//        Integer startInteger = (page-1)*items;
+//        if(date == null || StringUtils.isEmpty(date)){
+//            date = DateTime.now().toString("yyyy-MM-dd");
+//        }
+//        List<HomePageVo> homePageVoList = homePageDataMapper.selectHomePageData(date,startInteger, items);
+
+        //更新缓存实现方式，从redis获取首页最新数据：key: csxt_home_page_cache_by_channel_id_{channelId}
+        ArrayList<RedisChannelInfo> redisChannelInfos = new ArrayList<>();
+        int limitCounter = 0;
+        Set<String> keys = stringRedisTemplate.keys("csxt_home_page_cache_by_channel_id_*");
+        for (String key:
+             keys) {
+            if(limitCounter >= Integer.parseInt(limit)){
+                break;
+            }
+            RedisChannelInfo parsedHomePageObj = JSONObject.parseObject(stringRedisTemplate.opsForValue().get(key), RedisChannelInfo.class);
+            redisChannelInfos.add(parsedHomePageObj);
+            limitCounter++;
+        }
+        return RStatic.ok("查询成功").data("homePageDtoList",redisChannelInfos).data("total",redisChannelInfos.size());
     }
 }
