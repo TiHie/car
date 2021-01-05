@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.car.entity.dto.SpeedDTO;
 import com.car.util.RStatic;
 
+import java.text.ParseException;
+
 public interface TbCarService extends IService<TbCarEntity> {
 
     /**
@@ -19,7 +21,7 @@ public interface TbCarService extends IService<TbCarEntity> {
      * @param speedDTO
      * @return
      */
-    public RStatic channelOneCarData(SpeedDTO speedDTO);
+    public RStatic channelOneCarData(SpeedDTO speedDTO) throws ParseException;
 
     /**
      * 导出历史查询
