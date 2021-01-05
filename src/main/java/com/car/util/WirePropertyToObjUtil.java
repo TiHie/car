@@ -14,6 +14,7 @@ public class WirePropertyToObjUtil {
         //获取该类的类型
         Class<? extends Object> clazz = obj.getClass();
         //获取对象的属性
+        System.out.println("注射获取属性："+properName);
         Field field_name = clazz.getDeclaredField(properName);
         //开启访问权限
         field_name.setAccessible(true);
