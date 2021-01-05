@@ -14,7 +14,7 @@ public class RegRule2EntityFieldMapper {
             put("车牌颜色","licensePlateColor");//抓拍时间、车牌颜色、车牌名称、通道名称车速、通道名称、车速，
             put("车牌名称","licensePlate");
             put("通道名称车速","channelNameAndSpeed");
-            put("通道","channelName");
+            put("通道名称","channelName");
             put("车速","speed");
         }
     };
