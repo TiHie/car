@@ -18,11 +18,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import sun.rmi.runtime.Log;
+//import sun.rmi.runtime.Log;
 
 import java.awt.print.PrinterAbortException;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,7 +126,7 @@ public class CarController {
 
     @ApiOperation("放大图片跳出的信息")
     @GetMapping("/api/user/channelOneCarData")
-    public RStatic channelOneCarData(SpeedDTO speedDTO) {
+    public RStatic channelOneCarData(SpeedDTO speedDTO) throws ParseException {
         return tbCarService.channelOneCarData(speedDTO);
     }
 

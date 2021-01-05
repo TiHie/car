@@ -74,40 +74,33 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
     }
 
     @Override
-    public RStatic channelOneCarData(SpeedDTO speedDTO) {
+    public RStatic channelOneCarData(SpeedDTO speedDTO) throws ParseException {
         if (speedDTO.getPage()!=null && speedDTO.getPage()!=null)
         {
             speedDTO.setPage((speedDTO.getPage()-1)*speedDTO.getItems());
 
         }
         Map<Integer, Map<String, Integer>> map = new HashMap<>();
+        List<SpeedVO> cameraGunListCars = tbCarMapper.getOneDayCars(speedDTO);
 
         Date hour = new Date();
         SimpleDateFormat df = new SimpleDateFormat("HH");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String now = formatter.format(new Date());
+        speedDTO.setStartTime(formatter.parse(now));
+        System.out.println("时间"+speedDTO.getStartTime());
         Integer hourInt;
-        if (speedDTO.getStartTime() != null && speedDTO.getChannelId() != null) {
+        if (speedDTO.getChannelId() != null) {
 
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            String startTimeStr = formatter.format(speedDTO.getStartTime());
-            long day = getDaySub(startTimeStr, formatter.format(new Date()));
-            if (day ==0) {
                 hourInt = Integer.parseInt(df.format(hour));
                 System.out.println("==="+hourInt);
                 for (int i = 0; i <= hourInt; i++) {
                     Map<String, Integer> hourMap = tbCarMapper.hourRatio(speedDTO, i);
                     map.put(i, hourMap);
                 }
-            }else if (day >= 1) {
-                hourInt = 24;
-                for (int i = 0; i < hourInt; i++) {
-                    Map<String, Integer> hourMap = tbCarMapper.hourRatio(speedDTO, i);
-                    System.out.println("=="+hourMap.values());
-                    map.put(i, hourMap);
-                }
-            }
         }
 
-        List<SpeedVO> cameraGunListCars = tbCarMapper.getOneDayCars(speedDTO);
+
         System.out.println("=="+cameraGunListCars.size());
         SpeedVO car = new SpeedVO();
         if(cameraGunListCars.size() > 0)
@@ -117,7 +110,8 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
             car = null;
         }
 
-        if (speedDTO.getStartTime() != null && speedDTO.getChannelId() != null) {
+        if (speedDTO.getChannelId() != null) {
+
             Map<String, Integer> stringIntegerMap = tbCarMapper.oneDayRatio(speedDTO);
             return RStatic.ok("查询成功").data("car", car).data("hourRatio", map).data("dayRatio", stringIntegerMap);
 
@@ -169,7 +163,6 @@ public class TbCarServiceImpl extends ServiceImpl<TbCarMapper, TbCarEntity> impl
             return RStatic.error("错误原因："+e.getMessage());
         }
     }
-
 
     public static long getDaySub(String beginDateStr, String endDateStr) {
 

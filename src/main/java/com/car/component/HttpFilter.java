@@ -36,5 +36,6 @@ public class HttpFilter implements HandlerInterceptor {
 //        response.setCharacterEncoding("UTF-8");
 //        response.getWriter().print(JSONObject.toJSONString(RStatic.error(5001,"token失效,请重新登录")));
 //        return false;
+
     }
 }

@@ -1,10 +1,7 @@
 package com.car.exception;
 
 import com.car.util.RStatic;
-import jdk.Exported;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ExceptionHandler;
